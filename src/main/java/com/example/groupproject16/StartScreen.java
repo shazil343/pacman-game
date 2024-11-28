@@ -2,75 +2,64 @@ package com.example.groupproject16;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+
+
 
 public class StartScreen extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // Title
-        Text title = new Text("Pac-Man Character Selection");
-        title.setFont(Font.font("Arial", 30));
-        title.setFill(Color.YELLOW);
+        // Load the image
+        Image logo = new Image("pac-man-logo.png"); // Ensure the pac-man-logo.png file is in the resources folder or same directory
 
-        // Username input
-        Text usernameLabel = new Text("Enter Your Username:");
-        usernameLabel.setFont(Font.font("Arial", 18));
-        usernameLabel.setFill(Color.WHITE);
+        // Create an ImageView to display the image
+        ImageView imageView = new ImageView(logo);
 
+        // Optional: Set size for the image
+        imageView.setFitWidth(400); // Adjust width
+        imageView.setFitHeight(400); // Adjust height
+        imageView.setPreserveRatio(true); // Keep the aspect ratio
+
+        // Create a text field for username input
         TextField usernameField = new TextField();
-        usernameField.setPromptText("Username");
+        usernameField.setPromptText("Enter your username");
+        usernameField.setMaxWidth(300);
 
-        // Character selection
-        Text characterLabel = new Text("Select Your Character:");
-        characterLabel.setFont(Font.font("Arial", 18));
-        characterLabel.setFill(Color.WHITE);
-
-        ChoiceBox<String> characterChoiceBox = new ChoiceBox<>();
-        characterChoiceBox.getItems().addAll("Classic Pac-Man", "Speedy Pac-Man", "Stealth Pac-Man", "Power Pac-Man");
-        characterChoiceBox.setValue("Classic Pac-Man");
-
-        // Start button
+        // Create a button to start the game
         Button startButton = new Button("Start Game");
         startButton.setFont(Font.font("Arial", 18));
-        startButton.setStyle("-fx-background-color: #00ff00; -fx-text-fill: black; -fx-border-color: #009900; -fx-border-width: 2px;");
+        startButton.setStyle("-fx-background-color: #00ff00; -fx-text-fill: black;");
+
+
+
+        // Set action for the start button
         startButton.setOnAction(e -> {
             String username = usernameField.getText();
-            String selectedCharacter = characterChoiceBox.getValue();
-
             if (username.isEmpty()) {
                 System.out.println("Please enter a username.");
             } else {
-                System.out.println("Username: " + username);
-                System.out.println("Selected Character: " + selectedCharacter);
-                // Transition to the game screen (not implemented here)
+                System.out.println("Welcome, " + username + "! Starting game...");
+                // Add logic to start the game or transition to the next scene
             }
         });
 
-        // Layout
-        GridPane gridPane = new GridPane();
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.setVgap(20);
-        gridPane.add(title, 0, 0, 2, 1);
-        gridPane.add(usernameLabel, 0, 1);
-        gridPane.add(usernameField, 1, 1);
-        gridPane.add(characterLabel, 0, 2);
-        gridPane.add(characterChoiceBox, 1, 2);
-        gridPane.add(startButton, 0, 3, 2, 1);
+        // Create a vertical layout and add elements
+        VBox root = new VBox((double) 20.0, (Node) imageView, usernameField, startButton);
+        root.setAlignment(Pos.TOP_CENTER);
+        root.setStyle("-fx-background-color: black;");
 
-        gridPane.setStyle("-fx-background-color: black; -fx-padding: 20;");
-
-        // Scene and Stage
-        Scene scene = new Scene(gridPane, 600, 400);
-        primaryStage.setTitle("Pac-Man Character Selection");
+        // Create a scene and set it on the stage
+        Scene scene = new Scene(root, 600, 1000);
+        primaryStage.setTitle("Pac-Man Start Screen");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -79,3 +68,9 @@ public class StartScreen extends Application {
         launch(args);
     }
 }
+
+/*
+        ChoiceBox<String> characterChoiceBox = new ChoiceBox<>();
+        characterChoiceBox.getItems().addAll("Classic Pac-Man", "Speedy Pac-Man", "Stealth Pac-Man", "Power Pac-Man");
+        characterChoiceBox.setValue("Classic Pac-Man");
+*/

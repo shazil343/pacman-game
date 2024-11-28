@@ -14,9 +14,15 @@ public class PacManGame extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Create a title
-        Text title = new Text("Pac-Man");
+
+        Text title = new Text("PacMan");
         title.setFont(Font.font("Arial", 60));
         title.setFill(Color.YELLOW);
+
+
+        //FileInputStream inputstream = new
+        //FileInputStream("C:\\images\\image.jpg");
+        //Image image = new Image(inputstream);
 
         // Create a subtitle or instruction
         Text subtitle = new Text("Press Start to Play");
