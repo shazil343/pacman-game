@@ -1,17 +1,17 @@
 package com.example.groupproject16;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class Maze extends Application {
+import java.util.logging.Level;
 
+public class Maze extends Application {
 
     private static final int TILE_SIZE = 10;
     private static final int ROWS = 80; // Number of rows in the maze
@@ -55,9 +55,27 @@ public class Maze extends Application {
                     mazeGrid.add(tile, col, row);
                 }
             }
+            //Level and Score Text
+            Font customFont = Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 20);
+            Text level = new Text("LEVEL");
+            level.setFont(customFont);
+            level.setFill(Color.WHITE);
+
+
+
+            Text score = new Text("SCORE");
+            score.setFont(customFont);
+            score.setFill(Color.WHITE);
+
+            VBox root = new VBox(20);
+            root.setStyle("-fx-background-color: black;");
+            root.getChildren().addAll(mazeGrid,level,score);
+
+            root.setSpacing(10);
+
 
         // Create and set the scene
-        Scene scene = new Scene(mazeGrid,600,1000);
+        Scene scene = new Scene(root,600,1000);
         primaryStage.setTitle("Pac-Man Maze");
         primaryStage.setScene(scene);
         primaryStage.show();

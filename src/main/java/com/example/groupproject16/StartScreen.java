@@ -26,7 +26,6 @@ public class StartScreen extends Application {
     public void start(Stage primaryStage) {
         // Load the image
         Image logo = new Image("pac-man-logo.png"); // Ensure the pac-man-logo.png file is in the resources folder or same directory
-
         // Create an ImageView to display the image
         ImageView logoView = new ImageView(logo);
 
@@ -46,9 +45,9 @@ public class StartScreen extends Application {
 
 
         // Create a button to start the game
-        Button startButton = new Button("Start Game");
-        startButton.setFont(Font.font("Arial", 18));
-        startButton.setStyle("-fx-background-color: #00ff00; -fx-text-fill: black;");
+        Button startButton = new Button("START GAME");
+        startButton.setFont(customFont);
+        startButton.setStyle("-fx-background-color: #f5eb36; -fx-text-fill: black;");
 
 
 
