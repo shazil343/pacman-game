@@ -31,6 +31,7 @@ public class Maze extends Application {
                         mazeLayout[row][col] = 1; // Wall
                     } else {
                         mazeLayout[row][col] = 0; // Path
+
                     }
                 }
             }
