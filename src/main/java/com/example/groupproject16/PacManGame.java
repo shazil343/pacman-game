@@ -45,7 +45,7 @@ public class PacManGame extends Application {
         Scene scene = new Scene(root, 600, 400);
 
         // Configure the stage
-        primaryStage.setTitle("Pac-Man");
+        primaryStage.setTitle("PacMan");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
