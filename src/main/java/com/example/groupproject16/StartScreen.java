@@ -74,6 +74,7 @@ public class StartScreen extends Application {
         primaryStage.setTitle("Pac-Man Start Screen");
         primaryStage.setScene(scene);
         primaryStage.show();
+        
     }
 
     public static void main(String[] args) {
