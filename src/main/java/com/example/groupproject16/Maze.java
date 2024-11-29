@@ -22,10 +22,10 @@ public class Maze extends Application {
         @Override
         public void start(Stage primaryStage) {
             // Initialize the maze layout with the border walls
-            for (int row = 0; row < ROWS; row++) {
+            for (int row = 10; row < ROWS; row++) {
                 for (int col = 0; col < COLUMNS; col++) {
                     // Set border tiles to 1 (wall) and inner tiles to 0 (path)
-                    if (row == 0 || row == ROWS - 1 || col == 0 || col == COLUMNS - 1) {
+                    if (row == 10 || row == ROWS - 1 || col == 0 || col == COLUMNS - 1) {
                         mazeLayout[row][col] = 1; // Wall
                     } else {
                         mazeLayout[row][col] = 0; // Path
