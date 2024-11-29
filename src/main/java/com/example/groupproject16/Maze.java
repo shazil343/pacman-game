@@ -44,7 +44,10 @@ public class Maze extends Application {
                 for (int col = 0; col < COLUMNS; col++) {
                     Rectangle tile = new Rectangle(TILE_SIZE, TILE_SIZE);
                     if (mazeLayout[row][col] == 1 && row<BLUEROWS+1) {
-                        tile.setFill(Color.BLUE); // Wall
+                        tile.setFill(Color.BLUE);// Wall
+                        if (row == 35 && col == 0 || row == 35 && col == 53) {
+                            tile.setFill(Color.BLACK);
+                        }
                     } else {
                         tile.setFill(Color.BLACK); // Path
                     }
