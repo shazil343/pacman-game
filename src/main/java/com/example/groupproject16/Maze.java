@@ -40,6 +40,21 @@ public class Maze extends Application {
                     } else {
                         mazeLayout[row][col] = 0; // Inside of the box (path)
                     }
+                }
+                // Define small 4x4 boxes at the top
+                else if ((row >= 4 && row <= 7) && // Box height
+                        ((col >= 4 && col <= 7) || // Leftmost box
+                                (col >= 16 && col <= 19) || // Second box
+                                (col >= 28 && col <= 31) || // Third box
+                                (col >= 40 && col <= 43))) { // Rightmost box
+                    if (row == 4 || row == 7 || col == 4 || col == 7 || // Borders for leftmost box
+                            row == 4 || row == 7 || col == 16 || col == 19 || // Borders for second box
+                            row == 4 || row == 7 || col == 28 || col == 31 || // Borders for third box
+                            row == 4 || row == 7 || col == 40 || col == 43) { // Borders for rightmost box
+                        mazeLayout[row][col] = 1; // Wall
+                    } else {
+                        mazeLayout[row][col] = 0; // Path inside the boxes
+                    }
                 } else {
                     mazeLayout[row][col] = 0; // Path
                 }
@@ -102,3 +117,4 @@ public class Maze extends Application {
         launch(args);
     }
 }
+
