@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class ScreenSetUp extends Application {
+public class Maze extends Application {
 
     private static final int TILE_SIZE = 30; // Size of each square in the grid
     private static final int ROWS = 20; // Number of rows in the maze
