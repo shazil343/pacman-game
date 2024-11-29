@@ -82,7 +82,7 @@ public class Maze extends Application {
             root.getChildren().addAll(score,level,mazeGrid);
 
         // Create and set the scene
-        Scene scene = new Scene(root,600,700);
+        Scene scene = new Scene(root,600,800);
         primaryStage.setTitle("Pac-Man Maze");
         primaryStage.setScene(scene);
         primaryStage.show();
