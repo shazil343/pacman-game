@@ -48,6 +48,12 @@ public class Maze extends Application {
                         if (row == 35 && col == 0 || row == 35 && col == 53) {
                             tile.setFill(Color.BLACK);
                         }
+                        if (row == 34 && col == 0 || row == 34 && col == 53) {
+                            tile.setFill(Color.BLACK);
+                        }
+                        if (row == 36 && col == 0 || row == 36 && col == 53) {
+                            tile.setFill(Color.BLACK);
+                        }
                     } else {
                         tile.setFill(Color.BLACK); // Path
                     }
