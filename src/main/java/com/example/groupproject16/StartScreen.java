@@ -28,12 +28,12 @@ public class StartScreen extends Application {
         Image logo = new Image("pac-man-logo.png"); // Ensure the pac-man-logo.png file is in the resources folder or same directory
 
         // Create an ImageView to display the image
-        ImageView imageView = new ImageView(logo);
+        ImageView logoView = new ImageView(logo);
 
         // Optional: Set size for the image
-        imageView.setFitWidth(400); // Adjust width
-        imageView.setFitHeight(400); // Adjust height
-        imageView.setPreserveRatio(true); // Keep the aspect ratio
+        logoView.setFitWidth(400); // Adjust width
+        logoView.setFitHeight(400); // Adjust height
+        logoView.setPreserveRatio(true); // Keep the aspect ratio
 
 
         //importing the pacman font
@@ -52,6 +52,7 @@ public class StartScreen extends Application {
 
 
 
+
         // Set action for the start button
         startButton.setOnAction(e -> {
             String username = usernameField.getText();
@@ -64,7 +65,7 @@ public class StartScreen extends Application {
         });
 
         // Create a vertical layout and add elements
-        VBox root = new VBox(20.0, imageView, usernameField, startButton);
+        VBox root = new VBox(20.0, logoView, usernameField, startButton);
         root.setAlignment(Pos.TOP_CENTER);
         root.setStyle("-fx-background-color: black;");
 

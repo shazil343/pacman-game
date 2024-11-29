@@ -8,9 +8,9 @@ import javafx.stage.Stage;
 
 public class Maze extends Application {
 
-    private static final int TILE_SIZE = 30; // Size of each square in the grid
-    private static final int ROWS = 20; // Number of rows in the maze
-    private static final int COLUMNS = 20; // Number of columns in the maze
+    private static final int TILE_SIZE = 5;
+    private static final int ROWS = 60; // Number of rows in the maze
+    private static final int COLUMNS = 100; // Number of columns in the maze
 
     @Override
     public void start(Stage primaryStage) {
@@ -19,10 +19,19 @@ public class Maze extends Application {
 
         // Maze layout: 0 = empty path, 1 = wall, 2 = Pac-Man start, 3 = ghost zone
         int[][] mazeLayout = {
+                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                {1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1},
+                {1, 0, 1, 0, 0, 1, 0, 1, 0,0 , 0, 1, 0, 1, 0, 0, 0, 1, 0, 1},
+                {1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1},
+                {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
+                {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1},
+                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                 {1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
                 {1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1},
-                {1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1},
+                {1, 0, 1, 0, 0, 1, 0, 1, 0,0 , 0, 1, 0, 1, 0, 0, 0, 1, 0, 1},
                 {1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1},
                 {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
                 {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1},

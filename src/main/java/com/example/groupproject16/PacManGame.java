@@ -20,10 +20,6 @@ public class PacManGame extends Application {
         title.setFill(Color.YELLOW);
 
 
-        //FileInputStream inputstream = new
-        //FileInputStream("C:\\images\\image.jpg");
-        //Image image = new Image(inputstream);
-
         // Create a subtitle or instruction
         Text subtitle = new Text("Press Start to Play");
         subtitle.setFont(Font.font("Impact", 20));
