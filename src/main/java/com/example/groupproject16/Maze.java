@@ -14,8 +14,8 @@ public class Maze extends Application {
 
 
     private static final int TILE_SIZE = 10;
-    private static final int ROWS = 60; // Number of rows in the maze
-    private static final int COLUMNS = 100; // Number of columns in the maze
+    private static final int ROWS = 65; // Number of rows in the maze
+    private static final int COLUMNS = 54; // Number of columns in the maze
 
     private final int[][] mazeLayout = new int[ROWS][COLUMNS];
 
@@ -32,7 +32,6 @@ public class Maze extends Application {
                     }
                 }
             }
-
             // Create the maze grid
             GridPane mazeGrid = new GridPane();
 
