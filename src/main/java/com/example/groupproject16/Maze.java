@@ -3,6 +3,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -65,26 +66,30 @@ public class Maze extends Application {
             }
         }
             //Level and Score Text
-            Font customFont = Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 20);
+            Font customFont = Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 25);
             Text level = new Text("LEVEL");
             level.setFont(customFont);
             level.setFill(Color.WHITE);
-            level.setX(20);
-            level.setY(50);
+            level.setX(10);
+            level.setY(30);
 
 
             Text score = new Text("SCORE");
             score.setFont(customFont);
             score.setFill(Color.WHITE);
-            score.setX(50);
-            score.setY(50);
+            score.setX(400);
+            score.setY(30);
 
-            VBox root = new VBox(20);
-            root.setStyle("-fx-background-color: black;");
-            root.getChildren().addAll(score,level,mazeGrid);
+        // Use a Pane for absolute positioning
+        Pane root = new Pane();
+        root.setStyle("-fx-background-color: black;");
+
+        // Adjust the mazeGrid position so it does not overlap the texts
+        mazeGrid.setLayoutY(50); // Move the maze down
+        root.getChildren().addAll(mazeGrid, level,score);
 
         // Create and set the scene
-        Scene scene = new Scene(root, 600, 700);
+        Scene scene = new Scene(root,600,700);
         primaryStage.setTitle("Pac-Man Maze");
         primaryStage.setScene(scene);
         primaryStage.show();
