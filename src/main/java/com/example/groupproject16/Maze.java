@@ -1,5 +1,6 @@
 package com.example.groupproject16;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -66,22 +67,22 @@ public class Maze extends Application {
             Text level = new Text("LEVEL");
             level.setFont(customFont);
             level.setFill(Color.WHITE);
-
+            level.setX(20);
+            level.setY(50);
 
 
             Text score = new Text("SCORE");
             score.setFont(customFont);
             score.setFill(Color.WHITE);
+            score.setX(50);
+            score.setY(50);
 
             VBox root = new VBox(20);
             root.setStyle("-fx-background-color: black;");
-            root.getChildren().addAll(mazeGrid,level,score);
-
-            root.setSpacing(10);
-
+            root.getChildren().addAll(score,level,mazeGrid);
 
         // Create and set the scene
-        Scene scene = new Scene(root,600,1000);
+        Scene scene = new Scene(root,600,700);
         primaryStage.setTitle("Pac-Man Maze");
         primaryStage.setScene(scene);
         primaryStage.show();
