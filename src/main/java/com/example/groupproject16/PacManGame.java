@@ -26,7 +26,7 @@ public class PacManGame extends Application {
 
         // Create a subtitle or instruction
         Text subtitle = new Text("Press Start to Play");
-        subtitle.setFont(Font.font("Arial", 20));
+        subtitle.setFont(Font.font("Impact", 20));
         subtitle.setFill(Color.WHITE);
 
         // Create a start button

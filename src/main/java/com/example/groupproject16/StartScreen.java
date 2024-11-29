@@ -4,19 +4,25 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
+import static java.awt.SystemColor.text;
+import static javafx.scene.text.Font.loadFont;
 
 
 public class StartScreen extends Application {
 
-    @Override
+@Override
     public void start(Stage primaryStage) {
         // Load the image
         Image logo = new Image("pac-man-logo.png"); // Ensure the pac-man-logo.png file is in the resources folder or same directory
@@ -29,10 +35,15 @@ public class StartScreen extends Application {
         imageView.setFitHeight(400); // Adjust height
         imageView.setPreserveRatio(true); // Keep the aspect ratio
 
+
+        //importing the pacman font
+        Font customFont = Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 20);
+
         // Create a text field for username input
         TextField usernameField = new TextField();
-        usernameField.setPromptText("Enter your username");
         usernameField.setMaxWidth(300);
+        usernameField.setFont(customFont);
+
 
         // Create a button to start the game
         Button startButton = new Button("Start Game");
@@ -53,7 +64,7 @@ public class StartScreen extends Application {
         });
 
         // Create a vertical layout and add elements
-        VBox root = new VBox((double) 20.0, (Node) imageView, usernameField, startButton);
+        VBox root = new VBox(20.0, imageView, usernameField, startButton);
         root.setAlignment(Pos.TOP_CENTER);
         root.setStyle("-fx-background-color: black;");
 
@@ -66,8 +77,7 @@ public class StartScreen extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
-}
+    }}
 
 /*
         ChoiceBox<String> characterChoiceBox = new ChoiceBox<>();
