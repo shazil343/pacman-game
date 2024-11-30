@@ -1,12 +1,12 @@
 package com.example.groupproject16;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Circle;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -14,110 +14,85 @@ import java.util.Random;
 
 public class InitializeGhosts extends Application {
 
-    private static final int TILE_SIZE = 30; // Size of each grid tile
-    private static final int ROWS = 10; // Number of rows in the maze
-    private static final int COLUMNS = 10; // Number of columns in the maze
-    private static final int NUM_GHOSTS = 4; // Number of ghosts
-
-    private Circle[] ghosts = new Circle[NUM_GHOSTS]; // Array to hold ghosts
-    private Timeline timeline; // Timeline for ghost movement
-    private int level = 1; // Current level
-    private Random random = new Random();
-
-    private final int[][] mazeLayout = {
-            // Maze layout: 0 = path, 1 = wall
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 0, 0, 0, 0, 1, 0, 0, 0, 1},
-            {1, 0, 1, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 1, 0, 0, 0, 0, 1, 0, 1},
-            {1, 0, 1, 0, 1, 1, 0, 1, 0, 1},
-            {1, 0, 1, 0, 0, 0, 0, 1, 0, 1},
-            {1, 0, 1, 1, 1, 1, 0, 1, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-    };
+    private static final int SCENE_WIDTH = 600;
+    private static final int SCENE_HEIGHT = 400;
+    private static final int STEP = 5; // Movement step size
+    private static final int GHOST_COUNT = 4; // Number of ghosts
 
     @Override
     public void start(Stage primaryStage) {
-        // Create the grid for the maze
-        GridPane mazeGrid = new GridPane();
+        // Create a Pane to hold the ghosts
+        Pane root = new Pane();
+        root.setStyle("-fx-background-color: black;");
 
-        // Draw the maze
-        for (int row = 0; row < mazeLayout.length; row++) {
-            for (int col = 0; col < mazeLayout[row].length; col++) {
-                Rectangle tile = new Rectangle(TILE_SIZE, TILE_SIZE);
-                if (mazeLayout[row][col] == 1) {
-                    tile.setFill(Color.BLUE); // Wall
-                } else {
-                    tile.setFill(Color.BLACK); // Path
-                }
-                mazeGrid.add(tile, col, row);
-            }
-        }
+        // Random number generator for ghost directions
+        Random random = new Random();
 
-        // Initialize ghosts
-        for (int i = 0; i < NUM_GHOSTS; i++) {
-            Circle ghost = new Circle(TILE_SIZE / 2 - 5, getRandomGhostColor());
+        // Array to hold file paths for ghost GIFs
+        String[] ghostImages = {"green-ghost.gif", "orange-ghost.gif","pink-ghost.gif","red-ghost.gif"};
+
+        // Array to hold ghost ImageViews
+        ImageView[] ghosts = new ImageView[GHOST_COUNT];
+        Timeline[] timelines = new Timeline[GHOST_COUNT];
+
+        // Initialize each ghost
+        for (int i = 0; i < GHOST_COUNT; i++) {
+            // Load the ghost GIF
+            Image ghostImage = new Image(ghostImages[i]); // Use file paths from the array
+            ImageView ghost = new ImageView(ghostImage);
+
+            // Set initial position and size for each ghost
+            ghost.setFitWidth(40);
+            ghost.setFitHeight(40);
+            ghost.setX(random.nextInt(SCENE_WIDTH - 40)); // Random initial X position
+            ghost.setY(random.nextInt(SCENE_HEIGHT - 40)); // Random initial Y position
+
+            // Add ghost to the array and the Pane
             ghosts[i] = ghost;
+            root.getChildren().add(ghost);
 
-            // Place ghost at a random path tile
-            int startRow = random.nextInt(ROWS);
-            int startCol = random.nextInt(COLUMNS);
-            while (mazeLayout[startRow][startCol] != 0) {
-                startRow = random.nextInt(ROWS);
-                startCol = random.nextInt(COLUMNS);
-            }
+            // Create a Timeline for random movement
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> moveGhost(ghost, random)));
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.play();
 
-            GridPane.setRowIndex(ghost, startRow);
-            GridPane.setColumnIndex(ghost, startCol);
-            mazeGrid.add(ghost, startCol, startRow);
+            // Store the timeline
+            timelines[i] = timeline;
         }
 
-        // Set up ghost movement
-        timeline = new Timeline(new KeyFrame(Duration.millis(1000 / level), e -> moveGhostsRandomly()));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+        // Create the scene
+        Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
 
-        // Create and set the scene
-        Scene scene = new Scene(mazeGrid, TILE_SIZE * COLUMNS, TILE_SIZE * ROWS);
-        primaryStage.setTitle("Pac-Man Ghost Initialization");
+        // Set up the stage
+        primaryStage.setTitle("Random Moving Ghosts");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    private Color getRandomGhostColor() {
-        Color[] colors = {Color.RED, Color.PINK, Color.CYAN, Color.ORANGE};
-        return colors[random.nextInt(colors.length)];
-    }
+    private void moveGhost(ImageView ghost, Random random) {
+        // Generate a random direction
+        int direction = random.nextInt(4); // 0 = up, 1 = down, 2 = left, 3 = right
+        double newX = ghost.getX();
+        double newY = ghost.getY();
 
-    private void moveGhostsRandomly() {
-        for (Circle ghost : ghosts) {
-            int currentRow = GridPane.getRowIndex(ghost);
-            int currentCol = GridPane.getColumnIndex(ghost);
-
-            // Random movement: up, down, left, right
-            int[] direction = getRandomDirection();
-            int newRow = currentRow + direction[0];
-            int newCol = currentCol + direction[1];
-
-            // Check bounds and ensure the new position is valid
-            if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLUMNS && mazeLayout[newRow][newCol] == 0) {
-                GridPane.setRowIndex(ghost, newRow);
-                GridPane.setColumnIndex(ghost, newCol);
-            }
+        switch (direction) {
+            case 0 -> newY -= STEP; // Move up
+            case 1 -> newY += STEP; // Move down
+            case 2 -> newX -= STEP; // Move left
+            case 3 -> newX += STEP; // Move right
         }
 
-        // Increase ghost speed after each level
-        level++;
-        timeline.setRate(level);
-    }
+        // Ensure the ghost stays within bounds
+        newX = Math.max(0, Math.min(newX, SCENE_WIDTH - ghost.getFitWidth()));
+        newY = Math.max(0, Math.min(newY, SCENE_HEIGHT - ghost.getFitHeight()));
 
-    private int[] getRandomDirection() {
-        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // Up, Down, Left, Right
-        return directions[random.nextInt(directions.length)];
+        // Update ghost position
+        ghost.setX(newX);
+        ghost.setY(newY);
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 }
+

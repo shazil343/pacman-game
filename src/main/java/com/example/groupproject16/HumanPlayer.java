@@ -1,120 +1,98 @@
 package com.example.groupproject16;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class HumanPlayer extends Application {
 
-    private static final int TILE_SIZE = 30; // Size of each grid tile
-    private static final int ROWS = 20; // Number of rows in the maze
-    private static final int COLUMNS = 20; // Number of columns in the maze
+    private static final int SCENE_WIDTH = 600;
+    private static final int SCENE_HEIGHT = 400;
+    private static final int STEP = 5; // Movement step size
 
-    private int playerRow = 1; // Starting position of Pac-Man (row)
-    private int playerCol = 1; // Starting position of Pac-Man (column)
-    private int lives = 3; // Player lives
-
-    private Circle pacman; // Pac-Man's visual representation
-    private Text livesText; // Text to display lives
-
-    private final int[][] mazeLayout = {
-            // Maze layout: 0 = path, 1 = wall
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
-            {1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1},
-            {1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1},
-            {1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1},
-            {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-            {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-    };
+    private String currentDirection = null; // Track the current movement direction
+    private Timeline movementTimeline; // Timeline for continuous movement
 
     @Override
     public void start(Stage primaryStage) {
-        // Create the grid for the maze
-        GridPane mazeGrid = new GridPane();
-        mazeGrid.setStyle("-fx-background-color: black;");
+        // Load Pac-Man GIF
+        Image pacManImage = new Image("moving-pacman.gif"); // Replace "moving-pacman.gif" with the actual path to your GIF
+        ImageView pacMan = new ImageView(pacManImage);
 
-        // Draw the maze
-        for (int row = 0; row < mazeLayout.length; row++) {
-            for (int col = 0; col < mazeLayout[row].length; col++) {
-                if (mazeLayout[row][col] == 1) {
-                    mazeGrid.add(new Circle(TILE_SIZE / 2, Color.BLUE), col, row); // Wall
-                }
-            }
-        }
+        // Set initial position and size for Pac-Man
+        pacMan.setFitWidth(20);
+        pacMan.setFitHeight(20);
+        pacMan.setX(SCENE_WIDTH / 2 - 20); // Center horizontally
+        pacMan.setY(SCENE_HEIGHT / 2 - 20); // Center vertically
 
-        // Create Pac-Man
-        pacman = new Circle(TILE_SIZE / 2 - 5, Color.YELLOW);
-        mazeGrid.add(pacman, playerCol, playerRow);
+        // Create a Pane to hold the Pac-Man
+        Pane root = new Pane();
+        root.getChildren().add(pacMan);
 
-        // Create lives text
-        livesText = new Text("Lives: " + lives);
-        livesText.setFill(Color.WHITE);
-        livesText.setStyle("-fx-font-size: 20px;");
-        mazeGrid.add(livesText, 0, ROWS);
+        // Create a scene
+        Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
 
-        // Set up keyboard controls
-        Scene scene = new Scene(mazeGrid, TILE_SIZE * COLUMNS, TILE_SIZE * ROWS);
-        scene.setOnKeyPressed(this::handleMovement);
+        // Timeline for continuous movement
+        movementTimeline = new Timeline(new KeyFrame(Duration.millis(50), e -> movePacMan(pacMan)));
+        movementTimeline.setCycleCount(Timeline.INDEFINITE);
 
-        // Configure the stage
-        primaryStage.setTitle("Pac-Man: Human Player");
+        // Add key event handlers for movement
+        scene.setOnKeyPressed(event -> startMoving(event, pacMan));
+
+        // Set up the stage
+        primaryStage.setTitle("Pac-Man Continuous Movement with Rotation");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    private void handleMovement(KeyEvent event) {
-        int newRow = playerRow;
-        int newCol = playerCol;
-
+    private void startMoving(KeyEvent event, ImageView pacMan) {
         switch (event.getCode()) {
-            case UP:
-                newRow--;
-                break;
-            case DOWN:
-                newRow++;
-                break;
-            case LEFT:
-                newCol--;
-                break;
-            case RIGHT:
-                newCol++;
-                break;
-            default:
-                return; // Ignore other keys
+            case UP, W -> {
+                currentDirection = "UP";
+                pacMan.setRotate(270); // Rotate image upwards
+            }
+            case DOWN, S -> {
+                currentDirection = "DOWN";
+                pacMan.setRotate(90); // Rotate image downwards
+            }
+            case LEFT, A -> {
+                currentDirection = "LEFT";
+                pacMan.setRotate(180); // Rotate image to the left
+            }
+            case RIGHT, D -> {
+                currentDirection = "RIGHT";
+                pacMan.setRotate(0); // Rotate image to the right
+            }
         }
 
-        // Check if the move is valid
-        if (isMoveValid(newRow, newCol)) {
-            playerRow = newRow;
-            playerCol = newCol;
-            GridPane.setRowIndex(pacman, playerRow);
-            GridPane.setColumnIndex(pacman, playerCol);
-        } else {
-            // Simulate losing a life if Pac-Man hits a wall
-            loseLife();
+        // Start the timeline if not already running
+        if (movementTimeline.getStatus() != Timeline.Status.RUNNING) {
+            movementTimeline.play();
         }
     }
 
-    private boolean isMoveValid(int row, int col) {
-        return row >= 0 && row < ROWS && col >= 0 && col < COLUMNS && mazeLayout[row][col] == 0;
-    }
+    private void movePacMan(ImageView pacMan) {
+        if (currentDirection == null) return;
 
-    private void loseLife() {
-        lives--;
-        livesText.setText("Lives: " + lives);
-
-        if (lives <= 0) {
-            System.out.println("Game Over!");
-            System.exit(0); // Exit the game
+        switch (currentDirection) {
+            case "UP" -> pacMan.setY(pacMan.getY() - STEP);
+            case "DOWN" -> pacMan.setY(pacMan.getY() + STEP);
+            case "LEFT" -> pacMan.setX(pacMan.getX() - STEP);
+            case "RIGHT" -> pacMan.setX(pacMan.getX() + STEP);
         }
+
+        // Prevent Pac-Man from moving out of bounds
+        double newX = Math.max(0, Math.min(pacMan.getX(), SCENE_WIDTH - pacMan.getFitWidth()));
+        double newY = Math.max(0, Math.min(pacMan.getY(), SCENE_HEIGHT - pacMan.getFitHeight()));
+        pacMan.setX(newX);
+        pacMan.setY(newY);
     }
 
     public static void main(String[] args) {

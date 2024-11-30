@@ -42,7 +42,7 @@ public class PacManGame extends Application {
         root.setStyle("-fx-background-color: black; -fx-alignment: center; -fx-padding: 20;");
 
         // Create the scene
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 600, 700);
 
         // Configure the stage
         primaryStage.setTitle("PacMan");

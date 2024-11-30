@@ -1,10 +1,11 @@
 package com.example.groupproject16;
+
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -17,6 +18,9 @@ public class FinalScreen extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
+        double scenceWidth = 600;
+        double scenceHeight = 700;
         // Simulated final score and leaderboard data
         int finalScore = 12345; // Example final score
         List<String> leaderboard = new ArrayList<>();
@@ -26,64 +30,67 @@ public class FinalScreen extends Application {
         leaderboard.add("4. Carol - 12000");
         leaderboard.add("5. Dave - 10000");
 
-        // Title
+        // GAME OVER text implementation
         Text title = new Text("Game Over");
-        title.setFont(Font.font("Arial", 50));
-        title.setFill(Color.RED);
+        title.setFont(Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 60));
+        title.setFill(Color.WHITE);
+        title.setX((600 - title.getLayoutBounds().getWidth()) / 2);
+        title.setY(50);
 
         // Final score
         Text scoreText = new Text("Your Final Score: " + finalScore);
-        scoreText.setFont(Font.font("Arial", 20));
-        scoreText.setFill(Color.WHITE);
+        scoreText.setFont(Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 25));
+        scoreText.setFill(Color.YELLOW);
+        scoreText.setX((600 -scoreText.getLayoutBounds().getWidth())/ 2);
+        scoreText.setY(100);
 
         // Leaderboard title
         Text leaderboardTitle = new Text("Leaderboard");
-        leaderboardTitle.setFont(Font.font("Arial", 30));
+        leaderboardTitle.setFont(Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 50));
         leaderboardTitle.setFill(Color.YELLOW);
+        leaderboardTitle.setX(100);
+        leaderboardTitle.setY(160);
 
         // Leaderboard list
         ListView<String> leaderboardView = new ListView<>();
         leaderboardView.getItems().addAll(leaderboard);
         leaderboardView.setStyle("-fx-background-color: black; -fx-text-fill: white;");
+        leaderboardView.setPrefWidth(400);
         leaderboardView.setPrefHeight(150);
+        leaderboardView.setLayoutX(100);
+        leaderboardView.setLayoutY(320);
 
         // Play Again button
-        Button playAgainButton = new Button("Play Again");
-        playAgainButton.setFont(Font.font("Arial", 18));
-        playAgainButton.setStyle("-fx-background-color: #00ff00; -fx-text-fill: black; -fx-border-color: #009900; -fx-border-width: 2px;");
+        Button playAgainButton = new Button("PLAY AGAIN");
+        playAgainButton.setFont(Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 30));
+        playAgainButton.setStyle("-fx-background-color: #f5eb36; -fx-text-fill: white; -fx-border-width: 2px;");
+
+
+        playAgainButton.setLayoutX((600 -scoreText.getLayoutBounds().getWidth())/ 2);
+        playAgainButton.setLayoutY(500);
         playAgainButton.setOnAction(e -> {
             System.out.println("Restarting game...");
             // Add logic to restart the game
         });
 
         // Exit button
-        Button exitButton = new Button("Exit");
-        exitButton.setFont(Font.font("Arial", 18));
-        exitButton.setStyle("-fx-background-color: #ff0000; -fx-text-fill: white; -fx-border-color: #990000; -fx-border-width: 2px;");
+        Button exitButton = new Button("EXIT");
+        exitButton.setFont(Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 30));
+        exitButton.setStyle("-fx-background-color: #ff0000; -fx-text-fill: black; -fx-border-color: #990000; -fx-border-width: 2px;");
+        exitButton.setLayoutX(300);
+        exitButton.setLayoutY(500);
         exitButton.setOnAction(e -> {
             System.out.println("Exiting game...");
             primaryStage.close();
         });
 
-        // Layout
-        VBox centerBox = new VBox(20, scoreText, leaderboardTitle, leaderboardView);
-        centerBox.setStyle("-fx-alignment: center;");
-
-        VBox buttonBox = new VBox(10, playAgainButton, exitButton);
-        buttonBox.setStyle("-fx-alignment: center;");
-
-        BorderPane root = new BorderPane();
-        root.setTop(title);
-        root.setCenter(centerBox);
-        root.setBottom(buttonBox);
-
-        BorderPane.setAlignment(title, javafx.geometry.Pos.CENTER);
-        BorderPane.setAlignment(buttonBox, javafx.geometry.Pos.CENTER);
-
-        root.setStyle("-fx-background-color: black; -fx-padding: 20;");
+        // Pane for absolute positioning
+        Pane root = new Pane();
+        root.setStyle("-fx-background-color: black;");
+        root.getChildren().addAll(title, scoreText, leaderboardTitle, leaderboardView, playAgainButton, exitButton);
 
         // Scene and Stage
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, scenceWidth, scenceHeight);
         primaryStage.setTitle("Pac-Man - Final Screen");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -93,3 +100,4 @@ public class FinalScreen extends Application {
         launch(args);
     }
 }
+

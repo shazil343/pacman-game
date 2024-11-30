@@ -20,9 +20,9 @@ public class Maze extends Application {
     private static final int BLUEROWS = 52;
     private static final int COLUMNS = 54;// Number of columns in the maze
 
-
-
     private final int[][] mazeLayout = new int[ROWS][COLUMNS];
+
+    int currentScore = 54;
 
     @Override
     public void start(Stage primaryStage) {
@@ -74,7 +74,7 @@ public class Maze extends Application {
             level.setY(30);
 
 
-            Text score = new Text("SCORE");
+            Text score = new Text("SCORE " + currentScore);
             score.setFont(customFont);
             score.setFill(Color.WHITE);
             score.setX(400);

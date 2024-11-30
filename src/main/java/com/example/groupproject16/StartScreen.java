@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -31,26 +32,40 @@ public class StartScreen extends Application {
 
         // Optional: Set size for the image
         logoView.setFitWidth(400); // Adjust width
-        logoView.setFitHeight(400); // Adjust height
-        logoView.setPreserveRatio(true); // Keep the aspect ratio
-
+        logoView.setFitHeight(250);// Adjust height
+        logoView.setPreserveRatio(true);
+        logoView.setLayoutX((600 - logoView.getFitWidth()) /2);
+        logoView.setLayoutY(-40);
 
         //importing the pacman font
-        Font customFont = Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 20);
+        Font customFont = Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 35);
 
         // Create a text field for username input
         TextField usernameField = new TextField();
+        usernameField.setPromptText("ENTER USERNAME");
         usernameField.setMaxWidth(300);
+        usernameField.setLayoutX((600 - 300)/2);
+        usernameField.setLayoutY(200);
         usernameField.setFont(customFont);
 
 
         // Create a button to start the game
         Button startButton = new Button("START GAME");
-        startButton.setFont(customFont);
+        startButton.setFont(Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 25));
         startButton.setStyle("-fx-background-color: #f5eb36; -fx-text-fill: black;");
 
+        startButton.setPrefWidth(225);
+        startButton.setPrefHeight(30);
 
 
+        startButton.setLayoutX((600 - startButton.getPrefWidth()) / 2);
+        startButton.setLayoutY(275);
+
+
+        startButton.setOnAction(event -> {
+            System.out.println("STARTING GAME...");
+            primaryStage.close();
+        });
 
         // Set action for the start button
         startButton.setOnAction(e -> {
@@ -64,12 +79,13 @@ public class StartScreen extends Application {
         });
 
         // Create a vertical layout and add elements
-        VBox root = new VBox(20.0, logoView, usernameField, startButton);
-        root.setAlignment(Pos.TOP_CENTER);
+        Pane root = new Pane();
         root.setStyle("-fx-background-color: black;");
 
+        root.getChildren().addAll(logoView, usernameField, startButton);
+
         // Create a scene and set it on the stage
-        Scene scene = new Scene(root, 600, 1000);
+        Scene scene = new Scene(root, 600, 700);
         primaryStage.setTitle("Pac-Man Start Screen");
         primaryStage.setScene(scene);
         primaryStage.show();
