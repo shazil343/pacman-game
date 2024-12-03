@@ -1,0 +1,61 @@
+﻿W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W
+W E E E E E E E E E E E E E E E E E E E E E E E E E W W W E E E E E E E E E E E E E E E E E E E E E E E E E W
+W E S E S E S E S E S E S E S E S E S E S E S E S E W W W E S E S E S E S E S E S E S E S E S E S E S E S E W
+W E E E E E E E E E E E E E E E E E E E E E E E E E W W W E E E E E E E E E E E E E E E E E E E E E E E E E W
+W E S E W W W W W W W E S E W W W W W W W W W E S E W W W E S E W W W W W W W E S E W W W W W W W W W E S S W
+W E E E W W W W W W W E E E W W W W W W W W W E E E W W W E E E W W W W W W W E E E W W W W W W W W W E E E W 
+W E S E W W W W W W W E S E W W W W W W W W W E S E W W W E S E W W W W W W W E S E W W W W W W W W W E S S W
+W E E E W W W W W W W E E E W W W W W W W W W E E E W W W E E E W W W W W W W E E E W W W W W W W W W E E E W
+W E S E W W W W W W W E S E W W W W W W W W W E S E W W W E S E W W W W W W W E S E W W W W W W W W W E S S W
+W E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E W
+W E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E W
+W E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E W
+W E S E W W W W W W W E S E W W W E S E W W W W W W W W W W W W W W W E S E W W W E S E W W W W W W W E S E W
+W E E E W W W W W W W E E E W W W E E E W W W W W W W W W W W W W W W E E E W W W E E E W W W W W W W E E E W
+W E S E W W W W W W W E S E W W W E S E W W W W W W W W W W W W W W W E S E W W W E S E W W W W W W W E S E W
+W E E E E E E E E E E E E E W W W E E E E E E E E E W W W E E E E E E E E E W W W E E E E E E E E E E E E E W
+W E S E S E S E S E S E S E W W W E S E S E S E S E W W W E S E S E S E S E W W W E S E S E S E S E S E S E W
+W E E E E E E E E E E E E E W W W E E E E E E E E E W W W E E E E E E E E E W W W E E E E E E E E E E E E E W
+W W W W W W W W W W W E S E W W W W W W W W W E E E W W W E E E W W W W W W W W W E S E W W W W W W W W W W W
+E E E E E E E E E E W E E E W W W W W W W W W E E E W W W E E E W W W W W W W W W E E E W E E E E E E E E E E
+E E E E E E E E E E W E S E W W W W W W W W W E E E W W W E E E W W W W W W W W W E S E W E E E E E E E E E E
+E E E E E E E E E E W E E E W W W E E E E E E E E E E E E E E E E E E E E E E W W W E E E W E E E E E E E E E E
+E E E E E E E E E E W E S E W W W E E E E E E E E E E E E E E E E E E E E E E W W W E S E W E E E E E E E E E E
+E E E E E E E E E E W E E E W W W E E E E E E E E E E E E E E E E E E E E E E W W W E E E W E E E E E E E E E E
+E E E E E E E E E E W E S E W W W E E E E E E E E E E E E E E E E E E E E E E W W W E S E W E E E E E E E E E E
+E E E E E E E E E E W E E E W W W E E E W W W W W W 1 1 1 W W W W W W E E E W W W E E E W E E E E E E E E E E
+W W W W W W W W W W W E S E W W W E E E W W E E E E E E E E E E E W W E E E W W W E S E W W W W W W W W W W W
+E E E E E E E E E E E E S E E E E E E E W W E E E E E E E E E E E W W E E E E E E E S E E E E E E E E E E E E
+E E E E E E E E E E E E E E E E E E E E W W E E E E E E E E E E E W W E E E E E E E E E E E E E E E E E E E E
+E E E E E E E E E E E E S E E E E E E E W W E E E E E E E E E E E W W E E E E E E E S E E E E E E E E E E E E 
+W W W W W W W W W W W E S E W W W E E E W W W W W W W W W W W W W W W E E E W W W E S E W W W W W W W W W W W
+E E E E E E E E E E W E S E W W W E E E W W W W W W W W W W W W W W W E E E W W W E S E W E E E E E E E E E E 
+E E E E E E E E E E W E S E W W W E E E E E E E E E E E E E E E E E E E E E W W W E S E W E E E E E E E E E E 
+E E E E E E E E E E W E S E W W W E E E E E E E E E E E E E E E E E E E E E W W W E S E W E E E E E E E E E E
+E E E E E E E E E E W E S E W W W E E E E E E E E E E E E E E E E E E E E E W W W E S E W E E E E E E E E E E
+E E E E E E E E E E W E S E W W W E E E E E E E E E E E E E E E E E E E E E W W W E S E W E E E E E E E E E E
+E E E E E E E E E E W E S E W W W E E E W W W W W W W W W W W W W W W E E E W W W E S E W E E E E E E E E E E
+E E E E E E E E E E W E S E W W W E E E W W W W W W W W W W W W W W W E E E W W W E S E W E E E E E E E E E E
+W W W W W W W W W W W E S E W W W E E E W W W W W W W W W W W W W W W E E E W W W E S E W W W W W W W W W W W
+W E E E E E E E E E E E E E E E E E E E E E E E E E W W W E E E E E E E E E E E E E E E E E E E E E E E E E W
+W E S E S E S E S E S E S E S E S E S E S E S E S E W W W E S E S E S E S E S E S E S E S E S E S E S E S E W
+W E E E E E E E E E E E E E E E E E E E E E E E E E W W W E E E E E E E E E E E E E E E E E E E E E E E E E W
+W E S E W W W W W W W E S E W W W W W W W W W E S E W W W E S E W W W W W W W W W E S E W W W W W W W E S E W
+W E E E W W W W W W W E E E W W W W W W W W W E E E W W W E E E W W W W W W W W W E E E W W W W W W W E E E W
+W E S E W W W W W W W E S E W W W W W W W W W E S E W W W E S E W W W W W W W W W E S E W W W W W W W E S E W
+W E E E E E E E W W W E E E E E E E E E E E E E E E P P P E E E E E E E E E E E E E E E W W W E E E E E E E W
+W E S E S E S E W W W E S E S E S E S E S E S E S E P P P E S E S E S E S E S E S E S E W W W E S E S E S E W
+W E E E E E E E W W W E E E E E E E E E E E E E E E P P P E E E E E E E E E E E E E E E W W W E E E E E E E W
+W W W W W E S E W W W E S E W W W E S E W W W W W W W W W W W W W W W E S E W W W E S E W W W E S E W W W W W 
+W W W W W E E E W W W E E E W W W E E E W W W W W W W W W W W W W W W E E E W W W E E E W W W E E E W W W W W
+W W W W W E S E W W W E S E W W W E S E W W W W W W W W W W W W W W W E S E W W W E S E W W W E S E W W W W W
+W E E E E E E E E E E E E E W W W E E E E E E E E E W W W E E E E E E E E E W W W E E E E E E E E E E E E E W
+W E S E S E S E S E S E S E W W W E S E S E S E S E W W W E S E S E S E S E W W W E S E S E S E S E S E S E W
+W E E E E E E E E E E E E E W W W E E E E E E E E E W W W E E E E E E E E E W W W E E E E E E E E E E E E E W
+W E S E W W W W W W W W W W W W W W W W W W W E S E W W W E S E W W W W W W W W W W W W W W W W W W W E S E W
+W E E E W W W W W W W W W W W W W W W W W W W E E E W W W E E E W W W W W W W W W W W W W W W W W W W E E E W
+W E S E W W W W W W W W W W W W W W W W W W W E S E W W W E S E W W W W W W W W W W W W W W W W W W W E S E W
+W E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E W
+W E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E S E W
+W E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E E W
+W W W W W W W W W WW W W W W W W W W WW W W W W W W W W WW W W W W W W W W WW W W W W W W W W W W W W W

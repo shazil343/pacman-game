@@ -2,7 +2,6 @@ package com.example.groupproject16;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -13,41 +12,14 @@ public class PacManGame extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // Create a title
+        // Create an instance of StartScreen
+        StartScreen startScreen = new StartScreen();
 
-        Text title = new Text("PacMan");
-        title.setFont(Font.font("Arial", 60));
-        title.setFill(Color.YELLOW);
+        // Launch the start screen
+        startScreen.start(primaryStage);
 
 
-        // Create a subtitle or instruction
-        Text subtitle = new Text("Press Start to Play");
-        subtitle.setFont(Font.font("Impact", 20));
-        subtitle.setFill(Color.WHITE);
 
-        // Create a start button
-        Button startButton = new Button("Start Game");
-        startButton.setFont(Font.font("Arial", 18));
-        startButton.setStyle("-fx-background-color: #ffcc00; -fx-text-fill: black; -fx-border-color: #ff9900; -fx-border-width: 2px;");
-
-        // Set action for the start button
-        startButton.setOnAction(e -> {
-            // Transition to the game scene (not implemented here)
-            System.out.println("Game Starting...");
-        });
-
-        // Layout for the screen
-        VBox root = new VBox(20);
-        root.getChildren().addAll(title, subtitle, startButton);
-        root.setStyle("-fx-background-color: black; -fx-alignment: center; -fx-padding: 20;");
-
-        // Create the scene
-        Scene scene = new Scene(root, 600, 700);
-
-        // Configure the stage
-        primaryStage.setTitle("PacMan");
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 
     public static void main(String[] args) {

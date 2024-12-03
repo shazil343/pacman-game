@@ -1,7 +1,6 @@
 package com.example.groupproject16;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -16,7 +15,6 @@ import java.util.List;
 
 public class FinalScreen extends Application {
 
-    @Override
     public void start(Stage primaryStage) {
 
         double scenceWidth = 600;

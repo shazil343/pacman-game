@@ -20,7 +20,6 @@ public class HumanPlayer extends Application {
     private String currentDirection = null; // Track the current movement direction
     private Timeline movementTimeline; // Timeline for continuous movement
 
-    @Override
     public void start(Stage primaryStage) {
         // Load Pac-Man GIF
         Image pacManImage = new Image(getClass().getResource("/Images/moving-pacman.gif").toExternalForm());

@@ -19,7 +19,6 @@ public class InitializeGhosts extends Application {
     private static final int STEP = 5; // Movement step size
     private static final int GHOST_COUNT = 4; // Number of ghosts
 
-    @Override
     public void start(Stage primaryStage) {
         // Create a Pane to hold the ghosts
         Pane root = new Pane();
