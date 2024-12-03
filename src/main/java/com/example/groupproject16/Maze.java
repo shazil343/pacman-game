@@ -3,10 +3,13 @@ package com.example.groupproject16;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,7 +19,7 @@ public class Maze extends Application {
 
     private static final int TILE_SIZE = 10;
     private static final int ROWS = 72;
-    private static final int COLUMNS = 54;
+    private static final int COLUMNS = 55;
     private String[][] mazeLayout;
 
     @Override
@@ -32,7 +35,9 @@ public class Maze extends Application {
             for (int col = 0; col < COLUMNS; col++) {
                 char tileType = mazeLayout[row][col] != null ? mazeLayout[row][col].charAt(0) : 'E';
 
+                StackPane cell = new StackPane(); // StackPane to layer the dot on top of the tile
                 Rectangle tile = new Rectangle(TILE_SIZE, TILE_SIZE);
+
                 switch (tileType) {
                     case 'W': // Wall
                         tile.setFill(Color.BLUE);
@@ -43,22 +48,43 @@ public class Maze extends Application {
                     case 'S': // Small Dot
                         tile.setFill(Color.BLACK); // Background
                         Circle dot = new Circle(TILE_SIZE / 4, Color.YELLOW); // Small Yellow Dot
-                        dot.setTranslateX((TILE_SIZE - dot.getRadius() * 2) / 2); // Center horizontally
-                        dot.setTranslateY((TILE_SIZE - dot.getRadius() * 2) / 2); // Center vertically
-                        mazeGrid.add(dot, col, row); // Add dot to the same cell
+                        cell.getChildren().add(dot); // Add dot on top of the tile
                         break;
                 }
-                mazeGrid.add(tile, col, row); // Add the tile
+                cell.getChildren().add(tile); // Add the tile to the cell
+                mazeGrid.add(cell, col, row); // Add the cell to the grid
             }
         }
 
+        /*
+        //Level and Score Text
+        Font customFont = Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 25);
+        Text level = new Text("LEVEL");
+        level.setData(customFont);
+        level.setFill(Color.WHITE);
+        level.setX(10);
+        level.setY(30);
+
+
+        Text score = new Text("SCORE " + currentScore);
+        score.setData(customFont);
+        score.setFill(Color.WHITE);
+        score.setX(400);
+        score.setY(30);
+
+         */
+
+        // Calculate the scene size to fit the entire maze
+        int sceneWidth = TILE_SIZE * COLUMNS;
+        int sceneHeight = TILE_SIZE * ROWS;
+
         // Create the scene and set it on the stage
-        Scene scene = new Scene(mazeGrid, TILE_SIZE * COLUMNS, TILE_SIZE * ROWS);
+        Scene scene = new Scene(mazeGrid, sceneWidth, sceneHeight, Color.BLACK);
         primaryStage.setTitle("Pac-Man Maze");
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
 
+    }
 
     private String[][] loadMazeFromFile(String fileName) {
         String[][] maze = new String[ROWS][COLUMNS];
