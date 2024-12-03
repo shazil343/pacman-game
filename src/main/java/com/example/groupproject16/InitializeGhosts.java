@@ -19,6 +19,10 @@ public class InitializeGhosts extends Application {
     private static final int STEP = 5; // Movement step size
     private static final int GHOST_COUNT = 4; // Number of ghosts
 
+    //should hold the actual positioning of pacman i.e logic not fully implemented yet
+    public static double pacManX = 300;
+    public static double pacManY = 200;
+
     public void start(Stage primaryStage) {
         // Create a Pane to hold the ghosts
         Pane root = new Pane();
@@ -28,16 +32,15 @@ public class InitializeGhosts extends Application {
         Random random = new Random();
 
         // Array to hold file paths for ghost GIFs
-        String[] ghostImages = {"green-ghost.gif", "orange-ghost.gif","pink-ghost.gif","red-ghost.gif"};
+        String[] ghostImages = {"green-ghost.gif", "orange-ghost.gif", "pink-ghost.gif", "red-ghost.gif"};
 
         // Array to hold ghost ImageViews
         ImageView[] ghosts = new ImageView[GHOST_COUNT];
-        Timeline[] timelines = new Timeline[GHOST_COUNT];
 
         // Initialize each ghost
         for (int i = 0; i < GHOST_COUNT; i++) {
             // Load the ghost GIF
-            Image ghostImage = new Image(ghostImages[i]); // Use file paths from the array
+            Image ghostImage = new Image(getClass().getResource("/Images/" + ghostImages[i]).toExternalForm());
             ImageView ghost = new ImageView(ghostImage);
 
             // Set initial position and size for each ghost
@@ -49,49 +52,45 @@ public class InitializeGhosts extends Application {
             // Add ghost to the array and the Pane
             ghosts[i] = ghost;
             root.getChildren().add(ghost);
-
-            // Create a Timeline for random movement
-            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> moveGhost(ghost, random)));
-            timeline.setCycleCount(Timeline.INDEFINITE);
-            timeline.play();
-
-            // Store the timeline
-            timelines[i] = timeline;
         }
+
+        // Create a Timeline for moving ghosts
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> {
+            for (ImageView ghost : ghosts) {
+                moveGhost(ghost);
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
         // Create the scene
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
 
         // Set up the stage
-        primaryStage.setTitle("Random Moving Ghosts");
+        primaryStage.setTitle("Moving Ghosts Towards Pac-Man");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    private void moveGhost(ImageView ghost, Random random) {
-        // Generate a random direction
-        int direction = random.nextInt(4); // 0 = up, 1 = down, 2 = left, 3 = right
-        double newX = ghost.getX();
-        double newY = ghost.getY();
+    private void moveGhost(ImageView ghost) {
+        // Calculate the direction to move based on Pac-Man's position
+        double ghostX = ghost.getX();
+        double ghostY = ghost.getY();
+        double deltaX = pacManX - ghostX;
+        double deltaY = pacManY - ghostY;
 
-        switch (direction) {
-            case 0 -> newY -= STEP; // Move up
-            case 1 -> newY += STEP; // Move down
-            case 2 -> newX -= STEP; // Move left
-            case 3 -> newX += STEP; // Move right
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            ghost.setX(ghostX + Math.signum(deltaX) * STEP); // Move in x direction
+        } else {
+            ghost.setY(ghostY + Math.signum(deltaY) * STEP); // Move in y direction
         }
 
         // Ensure the ghost stays within bounds
-        newX = Math.max(0, Math.min(newX, SCENE_WIDTH - ghost.getFitWidth()));
-        newY = Math.max(0, Math.min(newY, SCENE_HEIGHT - ghost.getFitHeight()));
-
-        // Update ghost position
-        ghost.setX(newX);
-        ghost.setY(newY);
+        ghost.setX(Math.max(0, Math.min(ghost.getX(), SCENE_WIDTH - ghost.getFitWidth())));
+        ghost.setY(Math.max(0, Math.min(ghost.getY(), SCENE_HEIGHT - ghost.getFitHeight())));
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 }
-
