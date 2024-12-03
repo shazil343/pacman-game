@@ -23,7 +23,7 @@ public class HumanPlayer extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Load Pac-Man GIF
-        Image pacManImage = new Image("moving-pacman.gif"); // Replace "moving-pacman.gif" with the actual path to your GIF
+        Image pacManImage = new Image(getClass().getResource("/Images/moving-pacman.gif").toExternalForm());
         ImageView pacMan = new ImageView(pacManImage);
 
         // Set initial position and size for Pac-Man
