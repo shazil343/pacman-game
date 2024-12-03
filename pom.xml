@@ -49,9 +49,6 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
-    </build>
-
-    <build>
         <plugins>
             <!-- Compiler plugin -->
             <plugin>
