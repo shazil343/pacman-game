@@ -3,13 +3,14 @@ package com.example.groupproject16;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -21,6 +22,10 @@ public class Maze extends Application {
     private static final int ROWS = 72;
     private static final int COLUMNS = 55;
     private String[][] mazeLayout;
+
+
+    private int currentScore = 54;
+    private int currentLevel = 0;
 
     @Override
     public void start(Stage primaryStage) {
@@ -35,7 +40,7 @@ public class Maze extends Application {
             for (int col = 0; col < COLUMNS; col++) {
                 char tileType = mazeLayout[row][col] != null ? mazeLayout[row][col].charAt(0) : 'E';
 
-                StackPane cell = new StackPane(); // StackPane to layer the dot on top of the tile
+                StackPane cell = new StackPane();
                 Rectangle tile = new Rectangle(TILE_SIZE, TILE_SIZE);
 
                 switch (tileType) {
@@ -46,7 +51,7 @@ public class Maze extends Application {
                         tile.setFill(Color.BLACK);
                         break;
                     case 'S': // Small Dot
-                        tile.setFill(Color.BLACK); // Background
+                        tile.setFill(Color.BLACK);
                         Circle dot = new Circle(TILE_SIZE / 4, Color.YELLOW); // Small Yellow Dot
                         cell.getChildren().add(dot); // Add dot on top of the tile
                         break;
@@ -56,34 +61,36 @@ public class Maze extends Application {
             }
         }
 
-        /*
-        //Level and Score Text
+        // Shift the grid down by setting its layout
+        mazeGrid.setLayoutY(70); // Shift the grid down
+
+        // Calculate the scene size to fit the entire maze
+        int sceneWidth = TILE_SIZE * COLUMNS;
+        int sceneHeight = TILE_SIZE * ROWS + 50; // Add extra height for the offset
+
+        // Level and Score Text
         Font customFont = Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 25);
-        Text level = new Text("LEVEL");
-        level.setData(customFont);
+        Text level = new Text("LEVEL: " +currentLevel);
+        level.setFont(customFont);
         level.setFill(Color.WHITE);
         level.setX(10);
         level.setY(30);
 
-
-        Text score = new Text("SCORE " + currentScore);
-        score.setData(customFont);
+        Text score = new Text("SCORE:" + currentScore);
+        score.setFont(customFont);
         score.setFill(Color.WHITE);
-        score.setX(400);
+        score.setX(350);
         score.setY(30);
 
-         */
-
-        // Calculate the scene size to fit the entire maze
-        int sceneWidth = TILE_SIZE * COLUMNS;
-        int sceneHeight = TILE_SIZE * ROWS;
+        // Combine all elements into a Pane
+        Pane root = new Pane();
+        root.getChildren().addAll(mazeGrid, level, score);
 
         // Create the scene and set it on the stage
-        Scene scene = new Scene(mazeGrid, sceneWidth, sceneHeight, Color.BLACK);
+        Scene scene = new Scene(root, sceneWidth, sceneHeight, Color.BLACK);
         primaryStage.setTitle("Pac-Man Maze");
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 
     private String[][] loadMazeFromFile(String fileName) {
@@ -100,10 +107,9 @@ public class Maze extends Application {
             }
         } catch (IOException e) {
             System.out.println("Error reading the maze file: " + e.getMessage());
-            // Initialize all tiles to "E" (empty space) as a fallback
             for (int row = 0; row < ROWS; row++) {
                 for (int col = 0; col < COLUMNS; col++) {
-                    maze[row][col] = "E";
+                    maze[row][col] = "E"; // Initialize to empty space as fallback
                 }
             }
         }
