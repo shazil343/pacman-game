@@ -11,6 +11,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -23,7 +25,6 @@ public class Maze extends Application {
     private static final int COLUMNS = 55;
     private String[][] mazeLayout;
 
-
     private int currentScore = 54;
     private int currentLevel = 0;
 
@@ -34,6 +35,10 @@ public class Maze extends Application {
 
         // Create the maze grid
         GridPane mazeGrid = new GridPane();
+
+        // Variables to track Pac-Man's initial position
+        int pacmanStartX = 0;
+        int pacmanStartY = 0;
 
         // Draw the maze using the layout
         for (int row = 0; row < ROWS; row++) {
@@ -55,6 +60,11 @@ public class Maze extends Application {
                         Circle dot = new Circle(TILE_SIZE / 4, Color.WHITE); // Small Yellow Dot
                         cell.getChildren().add(dot); // Add dot on top of the tile
                         break;
+                    case 'P': // Pac-Man Start Position
+                        tile.setFill(Color.BLACK);
+                        pacmanStartX = col * TILE_SIZE; // Save Pac-Man's starting X position
+                        pacmanStartY = row * TILE_SIZE; // Save Pac-Man's starting Y position
+                        break;
                 }
                 cell.getChildren().add(tile); // Add the tile to the cell
                 mazeGrid.add(cell, col, row); // Add the cell to the grid
@@ -70,27 +80,45 @@ public class Maze extends Application {
 
         // Level and Score Text
         Font customFont = Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 25);
-        Text level = new Text("LEVEL: " +currentLevel);
+        Text level = new Text("LEVEL: " + currentLevel);
         level.setFont(customFont);
         level.setFill(Color.WHITE);
         level.setX(10);
         level.setY(30);
 
-        Text score = new Text("SCORE:" + currentScore);
+        Text score = new Text("SCORE: " + currentScore);
         score.setFont(customFont);
         score.setFill(Color.WHITE);
         score.setX(350);
         score.setY(30);
 
+        // Add Pac-Man as an ImageView
+        Image pacManImage = new Image(getClass().getResource("/Images/moving-pacman.gif").toExternalForm());
+        ImageView pacMan = new ImageView(pacManImage);
+        pacMan.setFitWidth(20);
+        pacMan.setFitHeight(20);
+        pacMan.setX(pacmanStartX); // Set Pac-Man's starting X position
+        pacMan.setY(pacmanStartY); // Set Pac-Man's starting Y position
+
         // Combine all elements into a Pane
         Pane root = new Pane();
-        root.getChildren().addAll(mazeGrid, level, score);
+        root.getChildren().addAll(mazeGrid, level, score, pacMan);
 
         // Create the scene and set it on the stage
         Scene scene = new Scene(root, sceneWidth, sceneHeight, Color.BLACK);
         primaryStage.setTitle("Pac-Man Maze");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        // Add key listeners for Pac-Man movement
+        scene.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case UP, W -> pacMan.setY(pacMan.getY() - TILE_SIZE);
+                case DOWN, S -> pacMan.setY(pacMan.getY() + TILE_SIZE);
+                case LEFT, A -> pacMan.setX(pacMan.getX() - TILE_SIZE);
+                case RIGHT, D -> pacMan.setX(pacMan.getX() + TILE_SIZE);
+            }
+        });
     }
 
     private String[][] loadMazeFromFile(String fileName) {
@@ -120,3 +148,4 @@ public class Maze extends Application {
         launch(args);
     }
 }
+
