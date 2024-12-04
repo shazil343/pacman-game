@@ -82,6 +82,7 @@ public class FinalScreen extends Application {
             primaryStage.close();
         });
 
+
         // Pane for absolute positioning
         Pane root = new Pane();
         root.setStyle("-fx-background-color: black;");

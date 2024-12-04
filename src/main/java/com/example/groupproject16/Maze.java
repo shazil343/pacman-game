@@ -206,4 +206,3 @@ public class Maze extends Application {
         launch(args);
     }
 }
-
