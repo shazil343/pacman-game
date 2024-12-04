@@ -18,11 +18,13 @@ public class InitializeGhosts {
                     InitializeGhosts.class.getResource("/Images/" + ghostImages[i]).toExternalForm()
             );
             ImageView ghost = new ImageView(ghostImage);
-            ghost.setFitWidth(tileSize * 1.5);
-            ghost.setFitHeight(tileSize * 1.5);
+            ghost.setFitWidth(tileSize * 2.5);
+            ghost.setFitHeight(tileSize * 2.5);
             ghosts[i] = ghost;
         }
         return ghosts;
     }
 }
+
+
 
