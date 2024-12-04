@@ -23,15 +23,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
-/**
- * The Maze class represents the game maze where Pac-Man operates.
- */
+import static com.example.groupproject16.InitializeGhosts.GHOST_COUNT;
+
 public class Maze extends Application {
 
     private static final int TILE_SIZE = 10;
     private static final int ROWS = 72;
     private static final int COLUMNS = 55;
+    private static final int GHOST_COUNT = 4;
     private final Map<String, Character> mazeMap = new HashMap<>();
 
     private ImageView pacMan;
@@ -44,7 +45,7 @@ public class Maze extends Application {
     private int currentScore = 54;
     private int currentLevel = 0;
 
-    private Text scoreText; // Made scoreText a class-level variable
+    private Text scoreText;
 
     @Override
     public void start(Stage primaryStage) {
@@ -62,7 +63,7 @@ public class Maze extends Application {
         // Create Pac-Man
         pacMan = createPacMan();
         pacMan.setX(pacManCol * TILE_SIZE);
-        pacMan.setY(pacManRow * TILE_SIZE + 50); // Added Y-offset
+        pacMan.setY(pacManRow * TILE_SIZE + 50);
 
         Pane root = new Pane();
         root.getChildren().addAll(mazeGrid, pacMan);
@@ -75,13 +76,16 @@ public class Maze extends Application {
         level.setX(10);
         level.setY(30);
 
-        scoreText = new Text("SCORE: " + currentScore); // Initialize the class-level scoreText
+        scoreText = new Text("SCORE: " + currentScore);
         scoreText.setFont(customFont);
         scoreText.setFill(Color.WHITE);
         scoreText.setX(350);
         scoreText.setY(30);
 
         root.getChildren().addAll(level, scoreText);
+
+        // Initialize ghosts
+        initializeGhosts(root);
 
         Scene scene = new Scene(root, TILE_SIZE * COLUMNS, TILE_SIZE * ROWS + 50, Color.BLACK);
         scene.setOnKeyPressed(this::handleKeyPress);
@@ -96,11 +100,22 @@ public class Maze extends Application {
         primaryStage.show();
     }
 
-    /**
-     * Creates the GridPane representing the maze based on the maze layout.
-     *
-     * @return GridPane of the maze.
-     */
+    private void initializeGhosts(Pane root) {
+        ImageView[] ghosts = InitializeGhosts.createGhosts(GHOST_COUNT, TILE_SIZE);
+        Random random = new Random();
+        for (ImageView ghost : ghosts) {
+            int ghostRow, ghostCol;
+            do {
+                ghostRow = random.nextInt(ROWS);
+                ghostCol = random.nextInt(COLUMNS);
+            } while (mazeMap.getOrDefault(ghostRow + "," + ghostCol, 'W') == 'W');
+
+            ghost.setX(ghostCol * TILE_SIZE);
+            ghost.setY(ghostRow * TILE_SIZE + 50); // Account for offset
+            root.getChildren().add(ghost);
+        }
+    }
+
     private GridPane createMazeGrid() {
         GridPane mazeGrid = new GridPane();
         for (int row = 0; row < ROWS; row++) {
@@ -123,15 +138,10 @@ public class Maze extends Application {
                 mazeGrid.add(cell, col, row);
             }
         }
-        mazeGrid.setLayoutY(50); // Positioning the maze below the UI texts
+        mazeGrid.setLayoutY(50);
         return mazeGrid;
     }
 
-    /**
-     * Finds the starting position of Pac-Man marked by 'P' in the maze.
-     *
-     * @return true if found, false otherwise.
-     */
     private boolean findStartPosition() {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLUMNS; col++) {
@@ -145,24 +155,14 @@ public class Maze extends Application {
         return false;
     }
 
-    /**
-     * Creates the Pac-Man ImageView.
-     *
-     * @return ImageView of Pac-Man.
-     */
     private ImageView createPacMan() {
         Image pacManImage = new Image(getClass().getResource("/Images/moving-pacman.gif").toExternalForm());
         ImageView pacMan = new ImageView(pacManImage);
-        pacMan.setFitWidth(TILE_SIZE * 1.75);
-        pacMan.setFitHeight(TILE_SIZE * 1.75);
+        pacMan.setFitWidth(TILE_SIZE * 2.5);
+        pacMan.setFitHeight(TILE_SIZE * 2.5);
         return pacMan;
     }
 
-    /**
-     * Handles key press events to set Pac-Man's direction.
-     *
-     * @param event The KeyEvent.
-     */
     private void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
             case UP, W -> {
@@ -184,9 +184,6 @@ public class Maze extends Application {
         }
     }
 
-    /**
-     * Moves Pac-Man in the current direction if the move is valid.
-     */
     private void movePacMan() {
         if (currentDirection == null) return;
 
@@ -200,57 +197,28 @@ public class Maze extends Application {
             case "RIGHT" -> nextCol++;
         }
 
-        // Debugging: Log the current position, next position, and the tile type at the next position
-        System.out.printf("Current: (%d, %d), Next: (%d, %d), Tile: %c%n",
-                pacManRow, pacManCol, nextRow, nextCol,
-                mazeMap.getOrDefault(nextRow + "," + nextCol, 'E'));
-
         if (isValidMove(nextRow, nextCol)) {
             pacManRow = nextRow;
             pacManCol = nextCol;
             pacMan.setX(pacManCol * TILE_SIZE);
             pacMan.setY(pacManRow * TILE_SIZE + 50); // Added Y-offset
-            currentScore += 10; // Increment score for collecting a dot
-            updateScore(); // Update the score Text node
+            currentScore += 10;
+            updateScore();
         }
     }
 
-    /**
-     * Checks if moving to the specified position is valid.
-     *
-     * @param row The target row.
-     * @param col The target column.
-     * @return true if valid, false otherwise.
-     */
     boolean isValidMove(int row, int col) {
-        // Boundary checks
         if (row < 0 || row >= ROWS || col < 0 || col >= COLUMNS) {
-            System.out.println("Attempted to move out of bounds to (" + row + ", " + col + ").");
             return false;
         }
-
         char tileType = mazeMap.getOrDefault(row + "," + col, 'E');
-        if (tileType == 'W') {
-            System.out.println("Movement blocked by wall at (" + row + ", " + col + ").");
-            return false;
-        }
-
-        // Allow movement into 'S', 'E', or 'P'
         return tileType == 'S' || tileType == 'E' || tileType == 'P';
     }
 
-    /**
-     * Updates the score display.
-     */
     private void updateScore() {
         scoreText.setText("SCORE: " + currentScore);
     }
 
-    /**
-     * Loads the maze layout from a text file.
-     *
-     * @param fileName The path to the maze file within the resources directory.
-     */
     private void loadMazeFromFile(String fileName) {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -267,8 +235,6 @@ public class Maze extends Application {
             System.out.println("Error reading maze file: " + e.getMessage());
         }
     }
-
-
 
     public static void main(String[] args) {
         launch(args);
