@@ -153,8 +153,8 @@ public class Maze extends Application {
     private ImageView createPacMan() {
         Image pacManImage = new Image(getClass().getResource("/Images/moving-pacman.gif").toExternalForm());
         ImageView pacMan = new ImageView(pacManImage);
-        pacMan.setFitWidth(TILE_SIZE * 2.5);
-        pacMan.setFitHeight(TILE_SIZE * 2.5);
+        pacMan.setFitWidth(TILE_SIZE * 1.75);
+        pacMan.setFitHeight(TILE_SIZE * 1.75);
         return pacMan;
     }
 
@@ -200,6 +200,11 @@ public class Maze extends Application {
             case "RIGHT" -> nextCol++;
         }
 
+        // Debugging: Log the current position, next position, and the tile type at the next position
+        System.out.printf("Current: (%d, %d), Next: (%d, %d), Tile: %c%n",
+                pacManRow, pacManCol, nextRow, nextCol,
+                mazeMap.getOrDefault(nextRow + "," + nextCol, 'E'));
+
         if (isValidMove(nextRow, nextCol)) {
             pacManRow = nextRow;
             pacManCol = nextCol;
@@ -217,7 +222,7 @@ public class Maze extends Application {
      * @param col The target column.
      * @return true if valid, false otherwise.
      */
-    private boolean isValidMove(int row, int col) {
+    boolean isValidMove(int row, int col) {
         // Boundary checks
         if (row < 0 || row >= ROWS || col < 0 || col >= COLUMNS) {
             System.out.println("Attempted to move out of bounds to (" + row + ", " + col + ").");
@@ -262,6 +267,8 @@ public class Maze extends Application {
             System.out.println("Error reading maze file: " + e.getMessage());
         }
     }
+
+
 
     public static void main(String[] args) {
         launch(args);

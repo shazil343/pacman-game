@@ -26,6 +26,8 @@ public class PacManGame extends Application {
         maze.start(primaryStage); //call method
     }
 
+
+
     public static void main(String[] args) {
         launch(args);
     }
