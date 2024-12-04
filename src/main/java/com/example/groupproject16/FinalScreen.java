@@ -69,6 +69,8 @@ public class FinalScreen extends Application {
         playAgainButton.setOnAction(e -> {
             System.out.println("Restarting game...");
             // Add logic to restart the game
+            StartScreen startScreen = new StartScreen();
+            startScreen.start(primaryStage);
         });
 
         // Exit button
