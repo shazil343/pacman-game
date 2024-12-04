@@ -171,7 +171,7 @@ public class Maze extends Application {
                     case 'W' -> tile.setFill(Color.BLUE);
                     case 'E' -> tile.setFill(Color.BLACK);
                     case 'S' -> {
-                        tile.setFill(Color.BLACK);
+                        tile.setFill(Color.YELLOW);
                         Circle dot = new Circle(TILE_SIZE / 4, Color.YELLOW);
                         cell.getChildren().add(dot);
                     }
