@@ -1,3 +1,4 @@
+
 package com.example.groupproject16;
 
 import javafx.animation.KeyFrame;
@@ -49,7 +50,7 @@ public class Maze extends Application {
 
 @Override
 public void start(Stage primaryStage) {
-    loadMazeFromFile("src/resources/PacManMap.txt");
+    loadMazeFromFile("src/resources/PacManMapcopy.txt");
 
     if (!findStartPosition()) {
         System.err.println("Pac-Man's starting position ('P') not found in the maze!");
@@ -141,11 +142,7 @@ public void start(Stage primaryStage) {
         return mazeGrid;
     }
 
-    /**
-     * Finds the starting position of Pac-Man marked by 'P' in the maze.
-     *
-     * @return true if found, false otherwise.
-     */
+
     private boolean findStartPosition() {
         boolean found = false;
         for (int row = 0; row < ROWS; row++) {
@@ -167,11 +164,7 @@ public void start(Stage primaryStage) {
         return found;
     }
 
-    /**
-     * Creates the Pac-Man ImageView.
-     *
-     * @return ImageView of Pac-Man.
-     */
+
     private ImageView createPacMan() {
         Image pacManImage = new Image(getClass().getResource("/Images/moving-pacman.gif").toExternalForm());
         ImageView pacMan = new ImageView(pacManImage);
@@ -180,11 +173,7 @@ public void start(Stage primaryStage) {
         return pacMan;
     }
 
-    /**
-     * Handles key press events to set Pac-Man's direction.
-     *
-     * @param event The KeyEvent.
-     */
+
     private void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
             case UP, W -> {
@@ -205,10 +194,6 @@ public void start(Stage primaryStage) {
             }
         }
     }
-
-    /**
-     * Moves Pac-Man in the current direction if the move is valid.
-     */
     private void movePacMan() {
         if (currentDirection == null) return;
 
@@ -222,51 +207,27 @@ public void start(Stage primaryStage) {
             case "RIGHT" -> nextCol++;
         }
 
+        // Check if the move is within the bounds and not hitting a wall
         if (isValidMove(nextRow, nextCol)) {
             pacManRow = nextRow;
             pacManCol = nextCol;
-            pacMan.setX(pacManCol * TILE_SIZE);
-            pacMan.setY(pacManRow * TILE_SIZE + 50); // Added Y-offset
-            currentScore += 0; // Increment score for collecting a dot
-            updateScore(); // Update the score Text node
+            pacMan.setX(pacManCol * TILE_SIZE + TILE_SIZE / 2 - pacMan.getFitWidth() / 2);
+            pacMan.setY(pacManRow * TILE_SIZE + TILE_SIZE / 2 - pacMan.getFitHeight() / 2 + 50);
         }
     }
 
-    /**
-     * Checks if moving to the specified position is valid.
-     *
-     * @param row The target row.
-     * @param col The target column.
-     * @return true if valid, false otherwise.
-     */
-    boolean isValidMove(int row, int col) {
-        // Boundary checks
+    private boolean isValidMove(int row, int col) {
         if (row < 0 || row >= ROWS || col < 0 || col >= COLUMNS) {
-            System.out.println("Attempted to move out of bounds to (" + row + ", " + col + ").");
-            return false;
+            return false; // Ensure Pac-Man does not move out of maze bounds.
         }
-
-        char tileType = mazeMap.getOrDefault(row + "," + col, 'E');
-        if (tileType == 'W') {
-            return false;
-        }
-
-        // Allow movement into 'S', 'E', or 'P'
-        return tileType == 'S' || tileType == 'E' || tileType == 'P';
+        char tileType = mazeMap.getOrDefault(row + "," + col, 'W'); // Default to wall if no data.
+        return tileType == 'S' || tileType == 'P' || tileType == 'N'; // Specify which tile types are walkable.
     }
 
-    /**
-     * Updates the score display.
-     */
     private void updateScore() {
         scoreText.setText("SCORE: " + currentScore);
     }
 
-    /**
-     * Loads the maze layout from a text file.
-     *
-     * @param fileName The path to the maze file within the resources directory.
-     */
     private void loadMazeFromFile(String fileName) {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -289,4 +250,5 @@ public void start(Stage primaryStage) {
             }
         }
     }}
+
 
