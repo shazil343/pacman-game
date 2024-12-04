@@ -32,7 +32,6 @@ public class Maze extends Application {
     private static final int TILE_SIZE = 10;
     private static final int ROWS = 72;
     private static final int COLUMNS = 55;
-    private static final int GHOST_COUNT = 4;
     private final Map<String, Character> mazeMap = new HashMap<>();
 
     private ImageView pacMan;
@@ -240,3 +239,4 @@ public class Maze extends Application {
         launch(args);
     }
 }
+
