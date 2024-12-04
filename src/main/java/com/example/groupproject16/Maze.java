@@ -21,13 +21,15 @@ import javafx.util.Duration;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Maze extends Application {
 
     private static final int TILE_SIZE = 10;
     private static final int ROWS = 72;
     private static final int COLUMNS = 55;
-    private String[][] mazeLayout;
+    private final Map<String, Character> mazeMap = new HashMap<>();
 
     private ImageView pacMan;
     private String currentDirection = null;
@@ -42,52 +44,25 @@ public class Maze extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Load the maze from the file
-        mazeLayout = loadMazeFromFile("src/resources/PacManMap.txt");
+        loadMazeFromFile("src/resources/PacManMap.txt");
 
-        // Find Pac-Man's starting position ('P')
-        findStartPosition();
-
-        // Create the maze grid
-        GridPane mazeGrid = new GridPane();
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLUMNS; col++) {
-                char tileType = mazeLayout[row][col] != null && !mazeLayout[row][col].isEmpty()
-                        ? mazeLayout[row][col].charAt(0)
-                        : 'E';
-
-                Rectangle tile = new Rectangle(TILE_SIZE, TILE_SIZE);
-                StackPane cell = new StackPane();
-
-                switch (tileType) {
-                    case 'W': // Wall
-                        tile.setFill(Color.BLUE);
-                        break;
-                    case 'E': // Empty Space
-                        tile.setFill(Color.BLACK);
-                        break;
-                    case 'S': // Small Dot
-                        tile.setFill(Color.BLACK);
-                        Circle dot = new Circle(TILE_SIZE / 4, Color.YELLOW);
-                        cell.getChildren().add(dot);
-                        break;
-                }
-                cell.getChildren().add(tile);
-                mazeGrid.add(cell, col, row);
-            }
+        // Verify that maze is loaded properly
+        if (!findStartPosition()) {
+            throw new IllegalStateException("Pac-Man's starting position ('P') not found in the maze!");
         }
 
-        mazeGrid.setLayoutY(50);
+        // Build maze visuals
+        GridPane mazeGrid = createMazeGrid();
 
         // Create Pac-Man
         pacMan = createPacMan();
         pacMan.setX(pacManCol * TILE_SIZE);
         pacMan.setY(pacManRow * TILE_SIZE);
 
-        // Create a Pane to hold the maze and Pac-Man
         Pane root = new Pane();
         root.getChildren().addAll(mazeGrid, pacMan);
 
-        // Add level and score text
+        // Add UI components
         Font customFont = Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 25);
         Text level = new Text("LEVEL: " + currentLevel);
         level.setFont(customFont);
@@ -103,7 +78,6 @@ public class Maze extends Application {
 
         root.getChildren().addAll(level, score);
 
-        // Create the scene and set it on the stage
         Scene scene = new Scene(root, TILE_SIZE * COLUMNS, TILE_SIZE * ROWS + 50, Color.BLACK);
         scene.setOnKeyPressed(this::handleKeyPress);
 
@@ -117,27 +91,50 @@ public class Maze extends Application {
         primaryStage.show();
     }
 
-    private void findStartPosition() {
+    private GridPane createMazeGrid() {
+        GridPane mazeGrid = new GridPane();
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLUMNS; col++) {
-                if (mazeLayout[row][col] != null && !mazeLayout[row][col].isEmpty() && mazeLayout[row][col].equals("P")) {
+                char tileType = mazeMap.getOrDefault(row + "," + col, 'E');
+
+                Rectangle tile = new Rectangle(TILE_SIZE, TILE_SIZE);
+                StackPane cell = new StackPane();
+
+                switch (tileType) {
+                    case 'W' -> tile.setFill(Color.BLUE);
+                    case 'E' -> tile.setFill(Color.BLACK);
+                    case 'S' -> {
+                        tile.setFill(Color.BLACK);
+                        Circle dot = new Circle(TILE_SIZE / 4, Color.YELLOW);
+                        cell.getChildren().add(dot);
+                    }
+                }
+                cell.getChildren().add(tile);
+                mazeGrid.add(cell, col, row);
+            }
+        }
+        mazeGrid.setLayoutY(50);
+        return mazeGrid;
+    }
+
+    private boolean findStartPosition() {
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLUMNS; col++) {
+                if (mazeMap.getOrDefault(row + "," + col, 'E') == 'P') {
                     pacManRow = row;
                     pacManCol = col;
-                    return;
+                    return true;
                 }
             }
         }
-        // Default position if 'P' is not found
-        pacManRow = ROWS / 2;
-        pacManCol = COLUMNS / 2;
-        System.out.println("Pac-Man starting position not found. Defaulting to center.");
+        return false;
     }
 
     private ImageView createPacMan() {
         Image pacManImage = new Image(getClass().getResource("/Images/moving-pacman.gif").toExternalForm());
         ImageView pacMan = new ImageView(pacManImage);
-        pacMan.setFitWidth(TILE_SIZE * 2.5); // Larger than tiles
-        pacMan.setFitHeight(TILE_SIZE * 2.5); // Larger than tiles
+        pacMan.setFitWidth(TILE_SIZE * 2.5);
+        pacMan.setFitHeight(TILE_SIZE * 2.5);
         return pacMan;
     }
 
@@ -175,7 +172,6 @@ public class Maze extends Application {
             case "RIGHT" -> nextCol++;
         }
 
-        // Check if the next position is valid
         if (isValidMove(nextRow, nextCol)) {
             pacManRow = nextRow;
             pacManCol = nextCol;
@@ -185,40 +181,25 @@ public class Maze extends Application {
     }
 
     private boolean isValidMove(int row, int col) {
-        // Ensure within bounds
-        if (row < 0 || col < 0 || row >= ROWS || col >= COLUMNS) {
-            return false;
-        }
-
-        // Allow movement only on 'S', 'P', or 'N'
-        char tileType = mazeLayout[row][col] != null && !mazeLayout[row][col].isEmpty()
-                ? mazeLayout[row][col].charAt(0)
-                : 'E';
-        return tileType == 'S' || tileType == 'P' || tileType == 'N';
+        char tileType = mazeMap.getOrDefault(row + "," + col, 'E');
+        return tileType == 'S' || tileType == 'E' || tileType == 'P';
     }
 
-    private String[][] loadMazeFromFile(String fileName) {
-        String[][] maze = new String[ROWS][COLUMNS];
+    private void loadMazeFromFile(String fileName) {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             int row = 0;
             while ((line = br.readLine()) != null && row < ROWS) {
-                String[] rowElements = line.trim().split("\\s+"); // Split by whitespace
+                String[] rowElements = line.trim().split("\\s+");
                 for (int col = 0; col < COLUMNS && col < rowElements.length; col++) {
-                    maze[row][col] = rowElements[col].isEmpty() ? "E" : rowElements[col];
+                    char tile = rowElements[col].isEmpty() ? 'E' : rowElements[col].charAt(0);
+                    mazeMap.put(row + "," + col, tile);
                 }
                 row++;
             }
         } catch (IOException e) {
-            System.out.println("Error reading the maze file: " + e.getMessage());
-            // Default to an empty maze
-            for (int row = 0; row < ROWS; row++) {
-                for (int col = 0; col < COLUMNS; col++) {
-                    maze[row][col] = "E";
-                }
-            }
+            System.out.println("Error reading maze file: " + e.getMessage());
         }
-        return maze; //
     }
 
     public static void main(String[] args) {
