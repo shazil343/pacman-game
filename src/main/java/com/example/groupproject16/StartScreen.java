@@ -36,18 +36,19 @@ public class StartScreen extends Application {
         // Create a text field for username input
         TextField usernameField = new TextField();
         usernameField.setPromptText("ENTER USERNAME");
+        usernameField.setFont(Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 25));
         usernameField.setMaxWidth(300);
-        usernameField.setLayoutX((600 - 300) / 2);
-        usernameField.setLayoutY(200);
+        usernameField.setLayoutX((600 - 250) / 2);
+        usernameField.setLayoutY(180);
 
         // Create a button to start the game
         Button startButton = new Button("START GAME");
-        startButton.setFont(customFont);
+        startButton.setFont(Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 25));
         startButton.setStyle("-fx-background-color: #f5eb36; -fx-text-fill: black;");
         startButton.setPrefWidth(225);
         startButton.setPrefHeight(30);
-        startButton.setLayoutX((600 - startButton.getPrefWidth()) / 2);
-        startButton.setLayoutY(275);
+        startButton.setLayoutX((600 - 225) / 2);
+        startButton.setLayoutY(250);
 
         // Set action for the start button
         startButton.setOnAction(event -> {
