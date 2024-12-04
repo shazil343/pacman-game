@@ -87,7 +87,7 @@ public class HumanPlayer extends Application {
                 pacMan.setX(pacMan.getX() - STEP);
                 break;
             case RIGHT:
-                pacMan.setX(pacMan.getX() + STEP);
+                pacMan.setX(pacMan.getX() + STEP); //
                 break;
         }
 

@@ -1,7 +1,12 @@
 package com.example.groupproject16;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -11,8 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -25,6 +29,13 @@ public class Maze extends Application {
     private static final int COLUMNS = 55;
     private String[][] mazeLayout;
 
+    private ImageView pacMan;
+    private String currentDirection = null;
+    private Timeline movementTimeline;
+
+    private int pacManRow;
+    private int pacManCol;
+
     private int currentScore = 54;
     private int currentLevel = 0;
 
@@ -33,20 +44,19 @@ public class Maze extends Application {
         // Load the maze from the file
         mazeLayout = loadMazeFromFile("src/resources/PacManMap.txt");
 
+        // Find Pac-Man's starting position ('P')
+        findStartPosition();
+
         // Create the maze grid
         GridPane mazeGrid = new GridPane();
-
-        // Variables to track Pac-Man's initial position
-        int pacmanStartX = 0;
-        int pacmanStartY = 0;
-
-        // Draw the maze using the layout
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLUMNS; col++) {
-                char tileType = mazeLayout[row][col] != null ? mazeLayout[row][col].charAt(0) : 'E';
+                char tileType = mazeLayout[row][col] != null && !mazeLayout[row][col].isEmpty()
+                        ? mazeLayout[row][col].charAt(0)
+                        : 'E';
 
-                StackPane cell = new StackPane();
                 Rectangle tile = new Rectangle(TILE_SIZE, TILE_SIZE);
+                StackPane cell = new StackPane();
 
                 switch (tileType) {
                     case 'W': // Wall
@@ -56,29 +66,28 @@ public class Maze extends Application {
                         tile.setFill(Color.BLACK);
                         break;
                     case 'S': // Small Dot
-                        tile.setFill(Color.YELLOW);
-                        Circle dot = new Circle(TILE_SIZE / 4, Color.WHITE); // Small Yellow Dot
-                        cell.getChildren().add(dot); // Add dot on top of the tile
-                        break;
-                    case 'P': // Pac-Man Start Position
                         tile.setFill(Color.BLACK);
-                        pacmanStartX = col * TILE_SIZE; // Save Pac-Man's starting X position
-                        pacmanStartY = row * TILE_SIZE; // Save Pac-Man's starting Y position
+                        Circle dot = new Circle(TILE_SIZE / 4, Color.YELLOW);
+                        cell.getChildren().add(dot);
                         break;
                 }
-                cell.getChildren().add(tile); // Add the tile to the cell
-                mazeGrid.add(cell, col, row); // Add the cell to the grid
+                cell.getChildren().add(tile);
+                mazeGrid.add(cell, col, row);
             }
         }
 
-        // Shift the grid down by setting its layout
-        mazeGrid.setLayoutY(70); // Shift the grid down
+        mazeGrid.setLayoutY(50);
 
-        // Calculate the scene size to fit the entire maze
-        int sceneWidth = TILE_SIZE * COLUMNS;
-        int sceneHeight = TILE_SIZE * ROWS + 50; // Add extra height for the offset
+        // Create Pac-Man
+        pacMan = createPacMan();
+        pacMan.setX(pacManCol * TILE_SIZE);
+        pacMan.setY(pacManRow * TILE_SIZE);
 
-        // Level and Score Text
+        // Create a Pane to hold the maze and Pac-Man
+        Pane root = new Pane();
+        root.getChildren().addAll(mazeGrid, pacMan);
+
+        // Add level and score text
         Font customFont = Font.loadFont(getClass().getResourceAsStream("/Fonts/MegaMaxJonathanToo-YqOq2.ttf"), 25);
         Text level = new Text("LEVEL: " + currentLevel);
         level.setFont(customFont);
@@ -92,33 +101,100 @@ public class Maze extends Application {
         score.setX(350);
         score.setY(30);
 
-        // Add Pac-Man as an ImageView
-        Image pacManImage = new Image(getClass().getResource("/Images/moving-pacman.gif").toExternalForm());
-        ImageView pacMan = new ImageView(pacManImage);
-        pacMan.setFitWidth(20);
-        pacMan.setFitHeight(20);
-        pacMan.setX(pacmanStartX); // Set Pac-Man's starting X position
-        pacMan.setY(pacmanStartY); // Set Pac-Man's starting Y position
-
-        // Combine all elements into a Pane
-        Pane root = new Pane();
-        root.getChildren().addAll(mazeGrid, level, score, pacMan);
+        root.getChildren().addAll(level, score);
 
         // Create the scene and set it on the stage
-        Scene scene = new Scene(root, sceneWidth, sceneHeight, Color.BLACK);
+        Scene scene = new Scene(root, TILE_SIZE * COLUMNS, TILE_SIZE * ROWS + 50, Color.BLACK);
+        scene.setOnKeyPressed(this::handleKeyPress);
+
+        // Continuous movement timeline
+        movementTimeline = new Timeline(new KeyFrame(Duration.millis(50), e -> movePacMan()));
+        movementTimeline.setCycleCount(Timeline.INDEFINITE);
+        movementTimeline.play();
+
         primaryStage.setTitle("Pac-Man Maze");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
 
-        // Add key listeners for Pac-Man movement
-        scene.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-                case UP, W -> pacMan.setY(pacMan.getY() - TILE_SIZE);
-                case DOWN, S -> pacMan.setY(pacMan.getY() + TILE_SIZE);
-                case LEFT, A -> pacMan.setX(pacMan.getX() - TILE_SIZE);
-                case RIGHT, D -> pacMan.setX(pacMan.getX() + TILE_SIZE);
+    private void findStartPosition() {
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLUMNS; col++) {
+                if (mazeLayout[row][col] != null && !mazeLayout[row][col].isEmpty() && mazeLayout[row][col].equals("P")) {
+                    pacManRow = row;
+                    pacManCol = col;
+                    return;
+                }
             }
-        });
+        }
+        // Default position if 'P' is not found
+        pacManRow = ROWS / 2;
+        pacManCol = COLUMNS / 2;
+        System.out.println("Pac-Man starting position not found. Defaulting to center.");
+    }
+
+    private ImageView createPacMan() {
+        Image pacManImage = new Image(getClass().getResource("/Images/moving-pacman.gif").toExternalForm());
+        ImageView pacMan = new ImageView(pacManImage);
+        pacMan.setFitWidth(TILE_SIZE * 2.5); // Larger than tiles
+        pacMan.setFitHeight(TILE_SIZE * 2.5); // Larger than tiles
+        return pacMan;
+    }
+
+    private void handleKeyPress(KeyEvent event) {
+        switch (event.getCode()) {
+            case UP, W -> {
+                currentDirection = "UP";
+                pacMan.setRotate(270);
+            }
+            case DOWN, S -> {
+                currentDirection = "DOWN";
+                pacMan.setRotate(90);
+            }
+            case LEFT, A -> {
+                currentDirection = "LEFT";
+                pacMan.setRotate(180);
+            }
+            case RIGHT, D -> {
+                currentDirection = "RIGHT";
+                pacMan.setRotate(0);
+            }
+        }
+    }
+
+    private void movePacMan() {
+        if (currentDirection == null) return;
+
+        int nextRow = pacManRow;
+        int nextCol = pacManCol;
+
+        switch (currentDirection) {
+            case "UP" -> nextRow--;
+            case "DOWN" -> nextRow++;
+            case "LEFT" -> nextCol--;
+            case "RIGHT" -> nextCol++;
+        }
+
+        // Check if the next position is valid
+        if (isValidMove(nextRow, nextCol)) {
+            pacManRow = nextRow;
+            pacManCol = nextCol;
+            pacMan.setX(pacManCol * TILE_SIZE);
+            pacMan.setY(pacManRow * TILE_SIZE);
+        }
+    }
+
+    private boolean isValidMove(int row, int col) {
+        // Ensure within bounds
+        if (row < 0 || col < 0 || row >= ROWS || col >= COLUMNS) {
+            return false;
+        }
+
+        // Allow movement only on 'S', 'P', or 'N'
+        char tileType = mazeLayout[row][col] != null && !mazeLayout[row][col].isEmpty()
+                ? mazeLayout[row][col].charAt(0)
+                : 'E';
+        return tileType == 'S' || tileType == 'P' || tileType == 'N';
     }
 
     private String[][] loadMazeFromFile(String fileName) {
@@ -127,25 +203,25 @@ public class Maze extends Application {
             String line;
             int row = 0;
             while ((line = br.readLine()) != null && row < ROWS) {
-                String[] rowElements = line.trim().split(" ");
+                String[] rowElements = line.trim().split("\\s+"); // Split by whitespace
                 for (int col = 0; col < COLUMNS && col < rowElements.length; col++) {
-                    maze[row][col] = rowElements[col];
+                    maze[row][col] = rowElements[col].isEmpty() ? "E" : rowElements[col];
                 }
                 row++;
             }
         } catch (IOException e) {
             System.out.println("Error reading the maze file: " + e.getMessage());
+            // Default to an empty maze
             for (int row = 0; row < ROWS; row++) {
                 for (int col = 0; col < COLUMNS; col++) {
-                    maze[row][col] = "E"; // Initialize to empty space as fallback
+                    maze[row][col] = "E";
                 }
             }
         }
-        return maze;
+        return maze; //
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 }
-

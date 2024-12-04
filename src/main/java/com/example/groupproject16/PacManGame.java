@@ -22,7 +22,7 @@ public class PacManGame extends Application {
         Maze maze = new Maze();
 
         // Start the Maze class in the same stage
-        maze.start(primaryStage);
+        maze.start(primaryStage); //call method
     }
 
     public static void main(String[] args) {
