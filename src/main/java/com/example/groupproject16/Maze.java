@@ -32,6 +32,7 @@ public class Maze extends Application {
     private static final int TILE_SIZE = 10;
     private static final int ROWS = 72;
     private static final int COLUMNS = 55;
+    private static final int GHOST_COUNT = 4;
     private final Map<String, Character> mazeMap = new HashMap<>();
 
     private ImageView pacMan;
@@ -44,17 +45,16 @@ public class Maze extends Application {
     private int currentScore = 54;
     private int currentLevel = 0;
 
-    private Text scoreText;
+    private Text scoreText; // Made scoreText a class-level variable
 
-    @Override
-    public void start(Stage primaryStage) {
-        // Load the maze from the file
-        loadMazeFromFile("src/resources/PacManMap.txt");
+@Override
+public void start(Stage primaryStage) {
+    loadMazeFromFile("src/resources/PacManMap.txt");
 
-        // Verify that maze is loaded properly
-        if (!findStartPosition()) {
-            throw new IllegalStateException("Pac-Man's starting position ('P') not found in the maze!");
-        }
+    if (!findStartPosition()) {
+        System.err.println("Pac-Man's starting position ('P') not found in the maze!");
+        return; // Exit if no starting position is found
+    }
 
         // Build maze visuals
         GridPane mazeGrid = createMazeGrid();
@@ -86,7 +86,7 @@ public class Maze extends Application {
         // Initialize ghosts
         initializeGhosts(root);
 
-        Scene scene = new Scene(root, TILE_SIZE * COLUMNS, TILE_SIZE * ROWS + 50, Color.BLACK);
+        Scene scene = new Scene(root, TILE_SIZE * COLUMNS, TILE_SIZE * ROWS , Color.BLACK);
         scene.setOnKeyPressed(this::handleKeyPress);
 
         // Continuous movement timeline
@@ -128,7 +128,7 @@ public class Maze extends Application {
                     case 'W' -> tile.setFill(Color.BLUE);
                     case 'E' -> tile.setFill(Color.BLACK);
                     case 'S' -> {
-                        tile.setFill(Color.BLACK);
+                        tile.setFill(Color.YELLOW);
                         Circle dot = new Circle(TILE_SIZE / 4, Color.YELLOW);
                         cell.getChildren().add(dot);
                     }
@@ -137,23 +137,41 @@ public class Maze extends Application {
                 mazeGrid.add(cell, col, row);
             }
         }
-        mazeGrid.setLayoutY(50);
+        mazeGrid.setLayoutY(50); // Positioning the maze below the UI texts
         return mazeGrid;
     }
 
+    /**
+     * Finds the starting position of Pac-Man marked by 'P' in the maze.
+     *
+     * @return true if found, false otherwise.
+     */
     private boolean findStartPosition() {
+        boolean found = false;
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLUMNS; col++) {
-                if (mazeMap.getOrDefault(row + "," + col, 'E') == 'P') {
+                char tile = mazeMap.getOrDefault(row + "," + col, 'E');
+                if (tile == 'P') {
                     pacManRow = row;
                     pacManCol = col;
-                    return true;
+                    found = true;
+                    System.out.println("Pac-Man starts at: Row " + row + ", Column " + col);
+                    break;
                 }
             }
+            if (found) break;
         }
-        return false;
+        if (!found) {
+            System.err.println("Failed to find 'P' in the maze.");
+        }
+        return found;
     }
 
+    /**
+     * Creates the Pac-Man ImageView.
+     *
+     * @return ImageView of Pac-Man.
+     */
     private ImageView createPacMan() {
         Image pacManImage = new Image(getClass().getResource("/Images/moving-pacman.gif").toExternalForm());
         ImageView pacMan = new ImageView(pacManImage);
@@ -162,6 +180,11 @@ public class Maze extends Application {
         return pacMan;
     }
 
+    /**
+     * Handles key press events to set Pac-Man's direction.
+     *
+     * @param event The KeyEvent.
+     */
     private void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
             case UP, W -> {
@@ -183,6 +206,9 @@ public class Maze extends Application {
         }
     }
 
+    /**
+     * Moves Pac-Man in the current direction if the move is valid.
+     */
     private void movePacMan() {
         if (currentDirection == null) return;
 
@@ -201,42 +227,66 @@ public class Maze extends Application {
             pacManCol = nextCol;
             pacMan.setX(pacManCol * TILE_SIZE);
             pacMan.setY(pacManRow * TILE_SIZE + 50); // Added Y-offset
-            currentScore += 10;
-            updateScore();
+            currentScore += 0; // Increment score for collecting a dot
+            updateScore(); // Update the score Text node
         }
     }
 
+    /**
+     * Checks if moving to the specified position is valid.
+     *
+     * @param row The target row.
+     * @param col The target column.
+     * @return true if valid, false otherwise.
+     */
     boolean isValidMove(int row, int col) {
+        // Boundary checks
         if (row < 0 || row >= ROWS || col < 0 || col >= COLUMNS) {
+            System.out.println("Attempted to move out of bounds to (" + row + ", " + col + ").");
             return false;
         }
+
         char tileType = mazeMap.getOrDefault(row + "," + col, 'E');
+        if (tileType == 'W') {
+            return false;
+        }
+
+        // Allow movement into 'S', 'E', or 'P'
         return tileType == 'S' || tileType == 'E' || tileType == 'P';
     }
 
+    /**
+     * Updates the score display.
+     */
     private void updateScore() {
         scoreText.setText("SCORE: " + currentScore);
     }
 
+    /**
+     * Loads the maze layout from a text file.
+     *
+     * @param fileName The path to the maze file within the resources directory.
+     */
     private void loadMazeFromFile(String fileName) {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             int row = 0;
-            while ((line = br.readLine()) != null && row < ROWS) {
+            while ((line = br.readLine()) != null) {
                 String[] rowElements = line.trim().split("\\s+");
-                for (int col = 0; col < COLUMNS && col < rowElements.length; col++) {
+                for (int col = 0; col < rowElements.length; col++) {
                     char tile = rowElements[col].isEmpty() ? 'E' : rowElements[col].charAt(0);
                     mazeMap.put(row + "," + col, tile);
                 }
                 row++;
             }
         } catch (IOException e) {
-            System.out.println("Error reading maze file: " + e.getMessage());
+            System.err.println("Error reading maze file: " + e.getMessage());
+            // Initialize the map with empty space if error occurs
+            for (int i = 0; i < ROWS; i++) {
+                for (int j = 0; j < COLUMNS; j++) {
+                    mazeMap.put(i + "," + j, 'E');
+                }
+            }
         }
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-}
+    }}
 
