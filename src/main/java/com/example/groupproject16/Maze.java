@@ -98,7 +98,7 @@ public void start(Stage primaryStage) {
         movementTimeline.setCycleCount(Timeline.INDEFINITE);
         movementTimeline.play();
 
-        Scene scene = new Scene(root, TILE_SIZE * COLUMNS, TILE_SIZE * ROWS + 50, Color.BLACK);
+        scene = new Scene(root, TILE_SIZE * COLUMNS, TILE_SIZE * ROWS + 50, Color.BLACK);
         scene.setOnKeyPressed(this::handleKeyPress);
 
         primaryStage.setTitle("Pac-Man Maze");
