@@ -14,21 +14,75 @@
     <p>Java-based implementation of the classic Pac-Man arcade game.</p>
   </header>
 
-  <!-- OVERVIEW SECTION -->
+  <!-- OVERVIEW / SUMMARY SECTION -->
   <section id="overview">
-    <h2>Overview</h2>
-    <p>Collaborated with a team to develop a Java-based implementation of the classic Pac-Man arcade game. Integrated JavaFX for the GUI, implemented game mechanics, and developed features like leaderboards and dynamic difficulty levels.</p>
+    <h2>Project Overview</h2>
+    <p>
+      A modern spin on the classic Pac-Man arcade game, built in Java for the CPSC 219 course at 
+      the University of Calgary. The game features an interactive GUI, ghost AI, dynamic difficulty, 
+      and a leaderboard system.  
+    </p>
+    <p>
+      The primary objective is to collect pellets and fruits while evading ghosts. Each new level 
+      intensifies the challenge by increasing the number of ghosts and their movement speed.
+    </p>
+  </section>
+
+  <!-- MY ROLE & CONTRIBUTIONS SECTION (NEW) -->
+  <section id="my-role">
+    <h2>My Role & Key Contributions</h2>
+    <ul>
+      <li>
+        <strong>Implemented Ghost AI:</strong> Developed logic to handle distinct ghost behaviors, 
+        including different speeds and vulnerability states after Pac-Man eats a fruit.
+      </li>
+      <li>
+        <strong>Integrated JavaFX UI:</strong> Built the main game window, menus, and scoreboard 
+        layout, ensuring a user-friendly and responsive interface.
+      </li>
+      <li>
+        <strong>Leaderboards & Persistence:</strong> Created the database/file handling for storing 
+        player scores and nicknames, enabling the leaderboard feature.
+      </li>
+      <li>
+        <strong>Collaborative Version Control:</strong> Used GitHub to manage code merges and resolve 
+        conflicts, ensuring smooth teamwork with all group members.
+      </li>
+    </ul>
+  </section>
+
+  <!-- CHALLENGES & LEARNING OUTCOMES SECTION (NEW) -->
+  <section id="challenges">
+    <h2>Challenges & Learning Outcomes</h2>
+    <ul>
+      <li>
+        <strong>Challenge:</strong> Ensuring seamless collision detection between Pac-Man and ghosts 
+        in a constantly updating GUI. <br>
+        <strong>Solution:</strong> Implemented a well-defined game loop using JavaFX’s animation 
+        timeline, updating positions and detecting collisions each frame.
+      </li>
+      <li>
+        <strong>Challenge:</strong> Balancing difficulty curves so that each new level feels 
+        progressively harder but remains enjoyable. <br>
+        <strong>Solution:</strong> Dynamically increased ghost speed and number of ghosts. Also 
+        conducted user tests to refine difficulty algorithms.
+      </li>
+      <li>
+        <strong>Takeaway:</strong> Strengthened my understanding of JavaFX, concurrency in Java, 
+        and collaborative development using version control systems.
+      </li>
+    </ul>
   </section>
 
   <!-- FEATURES SECTION -->
   <section id="features">
     <h2>Key Features</h2>
     <ul>
-      <li>Interactive GUI developed using JavaFX.</li>
-      <li>Dynamic difficulty levels that increase with each round.</li>
-      <li>Implemented leaderboards to track player scores.</li>
+      <li>Immersive GUI developed using JavaFX.</li>
+      <li>Dynamic difficulty levels ramp up with each round.</li>
+      <li>Leaderboards to track player scores.</li>
       <li>Distinct ghost behaviors with varying speeds and strategies.</li>
-      <li>Background music and sound effects for an immersive experience.</li>
+      <li>Classic background music and arcade sound effects.</li>
     </ul>
   </section>
 
@@ -48,30 +102,68 @@
         <img src="GitHub.png" alt="GitHub" class="tech-icon">
         <p>GitHub</p>
       </div>
-      <!-- Add more technologies as needed -->
     </div>
   </section>
-  
 
-  <!-- DEMO SECTION -->
-  <section id="demo">
-    <h2>Demo</h2>
-    <img src="pacman_game.png" alt="Pac-Man Game Project Screenshot" class="project-image">
-    <p>Screenshot of the Pac-Man Game in action.</p>
+  <!-- GAMEPLAY & INSTRUCTIONS SECTION -->
+  <section id="gameplay">
+    <h2>Gameplay & Instructions</h2>
+    <article>
+      <h3>Game Objective</h3>
+      <ul>
+        <li><strong>Moving Pac-Man:</strong> Use arrow keys to navigate the maze.</li>
+        <li><strong>Eat Pellets & Fruits:</strong> Clear the maze by collecting them all.</li>
+        <li><strong>Avoid Ghosts:</strong> Losing all three lives ends the game.</li>
+        <li><strong>Vulnerable Ghosts:</strong> After eating fruit, Pac-Man can temporarily eat ghosts for bonus points.</li>
+      </ul>
+    </article>
+
+    <article>
+      <h3>Rules</h3>
+      <ul>
+        <li>Pac-Man starts with three lives.</li>
+        <li>The game ends once all lives are lost.</li>
+        <li>The number and speed of ghosts increase each level.</li>
+        <li>Ghost behaviors change when they become vulnerable.</li>
+      </ul>
+    </article>
+
+    <!-- SCREENSHOT / IMAGE -->
+    <figure>
+      <img src="pacman_game.png" alt="Pac-Man Game Project Screenshot" class="project-image">
+      <figcaption>Screenshot of Pac-Man in action</figcaption>
+    </figure>
+  </section>
+
+  <!-- HOW TO RUN SECTION -->
+  <section id="how-to-run">
+    <h2>How to Run the Game</h2>
+    <p>
+      <strong>IDE:</strong> Recommended to import the project in IntelliJ IDEA or Eclipse.  
+      <strong>Java:</strong> Use Java 22/23 for compatibility.  
+      <strong>JavaFX SDK:</strong> Make sure JavaFX libraries are properly configured.
+    </p>
+    <p>
+      After setup, run the main class to start the game and enjoy Pac-Man!
+    </p>
   </section>
 
   <!-- LINKS SECTION -->
   <section id="links">
     <h2>Links</h2>
-    <a href="https://github.com/shazilfkhan/pacman-game" target="_blank" class="btn">GitHub Repository</a>
+    <a href="https://github.com/shazilfkhan/pacman-game" target="_blank" class="btn">
+      GitHub Repository
+    </a>
   </section>
-
-   </section>
 
   <!-- CONTACT SECTION -->
   <section id="contact">
     <h2>Contact</h2>
-    <p>Feel free to reach out to me via email at <a href="mailto:shazil.khan@ucalgary.ca">shazil.khan@ucalgary.ca</a> or connect with me on <a href="https://www.linkedin.com/in/shazilfkhan" target="_blank">LinkedIn</a>.</p>
+    <p>
+      Feel free to reach out via email at 
+      <a href="mailto:shazil.khan@ucalgary.ca">shazil.khan@ucalgary.ca</a> or connect on  
+      <a href="https://www.linkedin.com/in/shazilfkhan" target="_blank">LinkedIn</a>.
+    </p>
   </section>
 
   <!-- FOOTER -->
@@ -81,3 +173,4 @@
 
 </body>
 </html>
+
