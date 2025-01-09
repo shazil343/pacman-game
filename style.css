@@ -107,6 +107,42 @@ section ul, section ol {
   box-shadow: 0 0 10px #1abc9c, 0 0 20px #1abc9c;
 }
 
+/* Minimal styling for the new sprites gallery */
+.sprite-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center; /* or 'flex-start' if you prefer */
+  margin-top: 20px;
+}
+
+.sprite-gallery figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 120px; /* keeps the figure from stretching too wide */
+}
+
+.sprite-gallery img {
+  width: 80px; /* or any size you prefer */
+  height: auto;
+  border: 2px solid #1abc9c;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  transition: transform 0.3s ease;
+}
+
+.sprite-gallery img:hover {
+  transform: scale(1.05);
+}
+
+.sprite-gallery figcaption {
+  font-size: 0.9rem;
+  color: #d1d1d1;
+  text-align: center;
+}
+
+
 /* FOOTER */
 footer {
   text-align: center;
